@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIU Campus Cart - Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body class="min-h-screen bg-gray-100">
+
+<!-- Navbar -->
+<div class="navbar bg-white shadow-lg px-4 py-2">
+  <div class="flex-1">
+    <a class="btn btn-ghost normal-case text-xl text-blue-600 font-semibold">DIU Campus Cart</a>
+  </div>
+  <div class="flex-none space-x-4">
+    <!-- Updated Logout link -->
+    <a th:href="@{/admin/logout}" class="btn btn-error text-white">Logout</a>
+  </div>
+</div>
+
+<div class="flex flex-col items-center justify-center mt-16 px-6">
+  <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome to the Admin Dashboard</h2>
+  <p class="text-lg text-gray-600 text-center mb-6">Manage Users and Products</p>
+
+  <!-- Card Grid -->
+  <div class="flex justify-center items-center w-full max-w-4xl gap-6 mb-6">
+
+    <!-- Manage Users Card -->
+    <div class="card bg-indigo-600 text-white shadow-xl hover:shadow-2xl transition-transform">
+      <div class="card-body flex flex-col items-center justify-center p-8 space-y-4">
+        <i class="fas fa-users text-4xl"></i>
+        <h3 class="text-2xl font-semibold">Manage Users</h3>
+        <p>View, edit, and manage registered users.</p>
+        <a th:href="@{/admin/manage-users}" class="btn bg-white text-indigo-600 py-2 px-4 rounded-lg">Manage Users</a>
+      </div>
+    </div>
+
+    <!-- Manage Products Card -->
+    <div class="card bg-orange-500 text-white shadow-xl hover:shadow-2xl transition-transform">
+      <div class="card-body flex flex-col items-center justify-center p-8 space-y-4">
+        <i class="fas fa-box-open text-4xl"></i>
+        <h3 class="text-2xl font-semibold">Manage Products</h3>
+        <p>View, edit, and remove listed products.</p>
+        <a th:href="@{/admin/manage-products}" class="btn bg-white text-orange-500 py-2 px-4 rounded-lg">Manage Products</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+
+</html>

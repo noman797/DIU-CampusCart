@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buy Products</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
+  <style>
+    body {
+      background: url('/pictures/DIU CampusCart_Pro.png') no-repeat center fixed;
+      background-size: cover;
+    }
+
+    .navbar {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+
+
+    .card-header {
+      text-align: center;
+    }
+
+    .card-header h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .card-body {
+      text-align: center;
+      color: #555;
+      flex-grow: 1;
+    }
+
+    .card-footer {
+      text-align: center;
+    }
+
+    .price {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #38bdf8;
+    }
+
+    .sold-out {
+      color: #ef4444;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .product-image {
+      width: auto;
+      height: auto; /* Ensuring fixed height for uniformity */
+      object-fit: cover; /* Ensures the image fully covers the container */
+      border-radius: 10px;
+      margin-bottom: 16px; /* Space between image and text */
+    }
+
+    .category-badge {
+      background-color: #4c51bf;
+      color: #fff;
+      font-size: 0.9rem;
+      padding: 5px 10px;
+      border-radius: 20px;
+      margin-top: 10px;
+    }
+
+  </style>
+</head>
+
+<body class="min-h-screen text-white">
+<!-- Navbar Section -->
+<div class="navbar bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 shadow-lg px-6 py-4">
+  <div class="flex-1">
+    <a class="btn btn-ghost normal-case text-white text-xl font-semibold">DIU Campus Cart</a>
+  </div>
+  <div class="flex-none space-x-4">
+    <a href="/dashboard" class="btn btn-error text-white">Dashboard</a>
+  </div>
+</div>
+
+<br>
+<h2 class="text-4xl font-bold text-center mb-8">Products Available for Sale</h2>
+
+<!-- Category Filter Section -->
+<div class="container mx-auto p-6 bg-black">
+  <div class="flex justify-center mb-6 bg-black">
+    <select id="category-filter" class=" bg-black select select-bordered border-2 border-gray-300 w-full max-w-xs">
+      <option value="">All Categories</option>
+      <option value="Electronics">Electronics</option>
+      <option value="Furniture">Furniture</option>
+      <option value="Books">Books</option>
+      <option value="Clothing">Clothing</option>
+      <option value="Others">Others</option>
+    </select>
+  </div>
+
+  <!-- Products Grid Section -->
+  <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Products will be dynamically loaded here -->
+  </div>
+</div>
+
+<script>
+  async function loadProducts(category = "") {
+    const productsContainer = document.getElementById("products-container");
+
+    try {
+      const response = await fetch(`/api/products?category=${category}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch products.");
+      }
+
+      const products = await response.json();
+      productsContainer.innerHTML = '';
+
+      if (products.length === 0) {
+        productsContainer.innerHTML = "<p class='text-center text-lg text-gray-600'>No products available.</p>";
+      } else {
+        products.forEach(product => {
+          const productCard = `
+            <div class="card relative">
+              <div class="card-header">
+                <h3>${product.name}</h3>
+                <span class="category-badge">${product.category}</span>
+              </div>
+              <div class="card-body">
+              <img src="${product.photoUrl}" alt="${product.name}" class="w-full aspect-[4/3] object-fit rounded-lg">
+
+                <p class="text-sm text-gray-600 mb-4">${product.description}</p>
+                <p class="price">$${product.price}</p>
+                <p class="text-sm text-gray-600">Contact: ${product.phone}</p>
+              </div>
+              <div class="card-footer">
+                ${product.soldOut
+                  ? `<p class="sold-out">SOLD OUT</p>`
+                  : `<button class="btn btn-warning text-white mt-4" onclick="markAsSold('${product.id}')">Mark as Sold</button>`}
+              </div>
+            </div>
+          `;
+          productsContainer.innerHTML += productCard;
+        });
+      }
+    } catch (error) {
+      console.error("Error loading products:", error);
+      productsContainer.innerHTML = "<p class='text-center text-lg text-red-600'>Error loading products.</p>";
+    }
+  }
+
+  async function markAsSold(productId) {
+    try {
+      const response = await fetch(`/api/products/${productId}/sold`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update product status.");
+      }
+
+      loadProducts();
+    } catch (error) {
+      console.error("Error marking product as sold:", error);
+      alert("Failed to mark product as sold.");
+    }
+  }
+
+  window.onload = () => loadProducts();
+
+  document.getElementById("category-filter").addEventListener("change", (event) => {
+    const category = event.target.value;
+    loadProducts(category);
+  });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DIU Campus Cart - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            background-image: url('/pictures/DIU CampusCart.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-gray-100">
+<!-- Navbar -->
+<div class="navbar bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg px-4 py-2">
+    <div class="flex-1">
+        <a class="btn btn-ghost normal-case text-xl text-white font-semibold">DIU Campus Cart</a>
+    </div>
+    <div class="flex-none space-x-4">
+<!--        <span class="text-gray-800 font-semibold" th:text="'Welcome, ' + ${user.fullName}"></span>-->
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-error text-white" th:onclick="window.location='/';">Logout</button>
+        </form>
+
+    </div>
+</div>
+
+<div class="flex flex-col items-center justify-center mt-16 px-6">
+    <h2 class="text-3xl font-bold text-white mb-4 drop-shadow-md">Welcome to Your Dashboard</h2>
+    <p class="text-lg text-white font-semibold text-center mb-6 drop-shadow-md">Buy and Sell Products Easily</p>
+
+
+    <!-- Card Grid -->
+    <div class="flex justify-center items-center w-full max-w-4xl gap-6 mb-6">
+
+        <!-- Buy Product Card -->
+        <div class="card bg-green-500 text-white shadow-xl hover:shadow-2xl transition-transform">
+            <div class="card-body flex flex-col items-center justify-center p-8 space-y-4">
+                <i class="fas fa-shopping-cart text-4xl"></i>
+                <h3 class="text-2xl font-semibold">Buy Product</h3>
+                <p>Find amazing products available for purchase.</p>
+                <a href="/products/buy-products" class="btn bg-white text-green-500 py-2 px-4 rounded-lg">Start Shopping</a>
+            </div>
+        </div>
+
+        <!-- Sell Product Card -->
+        <div class="card bg-blue-600 text-white shadow-xl hover:shadow-2xl transition-transform">
+            <div class="card-body flex flex-col items-center justify-center p-8 space-y-4">
+                <i class="fas fa-upload text-4xl"></i>
+                <h3 class="text-2xl font-semibold">Sell Product</h3>
+                <p>List your products for sale quickly and easily.</p>
+                <a href="/sell-product" class="btn bg-white text-blue-600 py-2 px-4 rounded-lg">Start Selling</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

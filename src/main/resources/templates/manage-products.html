@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Products</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" />
+  <!-- Include SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="min-h-screen bg-gray-100">
+
+<!-- Navbar -->
+<div class="navbar bg-white shadow-lg px-4 py-2">
+  <div class="flex-1">
+    <a class="btn btn-ghost normal-case text-xl text-blue-600 font-semibold">DIU Campus Cart</a>
+  </div>
+  <div class="flex-none space-x-4">
+    <a th:href="@{/admin/dashboard}" class="btn btn-error text-white">Back to Dashboard</a>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-6">Manage Products</h1>
+  <table class="min-w-full bg-white border border-gray-200">
+    <thead>
+    <tr>
+      <th class="px-4 py-2 border text-center">Product Name</th>
+      <th class="px-4 py-2 border text-center">Price</th>
+      <th class="px-4 py-2 border text-center">Image</th>
+      <th class="px-4 py-2 border text-center">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- If the products list is empty -->
+    <tr th:if="${#lists.isEmpty(products)}">
+      <td colspan="4" class="text-center text-gray-500">No products listed yet.</td>
+    </tr>
+    <!-- Loop over the products list -->
+    <tr th:each="product : ${products}">
+      <td class="text-center" th:text="${product.name}">Product Name</td>
+      <td class="text-center" th:text="${product.price}">Price</td>
+      <td class="text-center">
+        <img th:src="${product.photoUrl}" alt="Product Image" class="w-20 h-20 object-cover rounded mx-auto"/>
+      </td>
+      <td class="text-center">
+        <!-- Delete button -->
+        <button class="bg-red-500 text-white py-1 px-2 rounded-lg delete-btn"
+                th:attr="data-id=${product.id}">
+          Delete
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll(".delete-btn").forEach(button => {
+          button.addEventListener("click", function() {
+              const productId = this.getAttribute("data-id");
+
+              Swal.fire({
+                  title: "Are you sure?",
+                  text: "This product will be permanently deleted!",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#d33",
+                  cancelButtonColor: "#3085d6",
+                  confirmButtonText: "Yes, delete it!"
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      fetch(`/admin/deleteProduct?id=${productId}`, { method: "POST" })
+                          .then(response => response.json())
+                          .then(data => {
+                              if (data.message) {
+                                  Swal.fire("Deleted!", data.message, "success")
+                                      .then(() => location.reload());
+                              }
+                          })
+                          .catch(error => console.error("Error:", error));
+                  }
+              });
+          });
+      });
+  });
+</script>
+
+</body>
+</html>

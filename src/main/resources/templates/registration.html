@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIU Campus Cart - Register</title>
+
+  <!-- TailwindCSS & DaisyUI -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" />
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    body {
+      background: url('/pictures/DIU CampusCart_Sign.png') no-repeat center fixed;
+      background-size: cover;
+      padding-top: 90px; /* Adds space at the top */
+    }
+    .card {
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+    }
+    .card input {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+    }
+    .card input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen px-4 sm:px-0">
+<div class="card w-full max-w-md shadow-2xl p-8 rounded-2xl border border-gray-200">
+  <div class="text-center mb-6">
+    <img src="/pictures/logo.png" class="mx-auto w-24 sm:w-32 h-24 sm:h-32 shadow-md rounded-full" alt="DIU Logo" />
+    <h2 class="text-xl sm:text-2xl font-bold mt-4 text-white">Create Your Account</h2>
+    <p class="text-white text-sm sm:text-base">Join DIU Campus Cart today!</p>
+  </div>
+
+  <form id="register-form" class="space-y-5">
+    <div>
+      <label class="block text-sm font-medium text-white mb-1">Full Name</label>
+      <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-white">
+            <i class="fas fa-user"></i>
+          </span>
+        <input type="text" name="fullName" placeholder="Enter your full name" required
+               class="block w-full pl-10 pr-4 py-2.5 border-2 border-white rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-white mb-1">Email</label>
+      <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-white">
+            <i class="fas fa-envelope"></i>
+          </span>
+        <input type="email" name="email" placeholder="Enter email" required
+               class="block w-full pl-10 pr-4 py-2.5 border-2 border-white rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-white mb-1">Password</label>
+      <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-white">
+            <i class="fas fa-lock"></i>
+          </span>
+        <input type="password" name="password" id="password" placeholder="Create password" required
+               class="block w-full pl-10 pr-10 py-2.5 border-2 border-white rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3 text-white">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-white mb-1">Confirm Password</label>
+      <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-white">
+            <i class="fas fa-lock"></i>
+          </span>
+        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm password" required
+               class="block w-full pl-10 pr-10 py-2.5 border-2 border-white rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+        <button type="button" id="toggleConfirmPassword" class="absolute inset-y-0 right-0 flex items-center pr-3 text-white">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+      <p id="passwordMatchError" class="text-red-500 text-sm mt-1 hidden">Passwords do not match</p>
+    </div>
+
+    <button type="submit"
+            class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300 font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+      Create Account
+    </button>
+
+    <div class="text-center text-sm text-white mt-4">
+      Already have an account?
+      <a href="/" class="text-blue-400 hover:underline font-medium">Sign In</a>
+    </div>
+  </form>
+
+  <script>
+    // Toggle password visibility
+    document.getElementById("togglePassword").addEventListener("click", function() {
+      const passwordInput = document.getElementById("password");
+      const icon = this.querySelector("i");
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        passwordInput.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    });
+
+    document.getElementById("toggleConfirmPassword").addEventListener("click", function() {
+      const confirmPasswordInput = document.getElementById("confirmPassword");
+      const icon = this.querySelector("i");
+
+      if (confirmPasswordInput.type === "password") {
+        confirmPasswordInput.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        confirmPasswordInput.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    });
+
+    // Check if passwords match
+    document.getElementById("confirmPassword").addEventListener("input", function() {
+      const password = document.getElementById("password").value;
+      const confirmPassword = this.value;
+      const errorElement = document.getElementById("passwordMatchError");
+
+      if (password !== confirmPassword) {
+        errorElement.classList.remove("hidden");
+        this.classList.add("border-red-500");
+        this.classList.remove("border-white");
+      } else {
+        errorElement.classList.add("hidden");
+        this.classList.remove("border-red-500");
+        this.classList.add("border-white");
+      }
+    });
+
+    // Form submission
+    document.getElementById("register-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmPassword) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Passwords Do Not Match',
+          text: 'Please make sure your passwords match.',
+          confirmButtonColor: '#3085d6'
+        });
+        return;
+      }
+
+      // Show loading state
+      Swal.fire({
+        title: 'Creating your account...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      let formData = {
+        fullName: document.querySelector('input[name="fullName"]').value,
+        email: document.querySelector('input[name="email"]').value,
+        password: password
+      };
+
+      fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Registration failed');
+        }
+        return response.text();
+      })
+      .then(data => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Registration Successful!',
+          text: 'Your account has been created successfully.',
+          confirmButtonColor: '#3085d6'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "/";
+          }
+        });
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Registration Failed',
+          text: error.message || 'Something went wrong. Please try again.',
+          confirmButtonColor: '#3085d6'
+        });
+        console.error("Error:", error);
+      });
+    });
+  </script>
+</div>
+</body>
+
+</html>
