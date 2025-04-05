@@ -19,8 +19,8 @@ import java.util.Map;
 public class AdminController {
 
     private final Map<String, String> admins = Map.of(
-            "noman@diu.edu.bd", "noman1234",
-            "supan@diu.edu.bd", "supan1234"
+            "noman@diu.edu.bd", "Noman@797",
+            "supan@diu.edu.bd", "Roy@797"
     );
 
     private final UserRepository userRepository;

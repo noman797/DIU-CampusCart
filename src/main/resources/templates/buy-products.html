@@ -22,14 +22,11 @@
       border-radius: 15px;
       padding: 20px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       height: 100%;
     }
-
-
 
     .card-header {
       text-align: center;
@@ -63,14 +60,6 @@
       font-size: 1.1rem;
     }
 
-    .product-image {
-      width: auto;
-      height: auto; /* Ensuring fixed height for uniformity */
-      object-fit: cover; /* Ensures the image fully covers the container */
-      border-radius: 10px;
-      margin-bottom: 16px; /* Space between image and text */
-    }
-
     .category-badge {
       background-color: #4c51bf;
       color: #fff;
@@ -79,12 +68,11 @@
       border-radius: 20px;
       margin-top: 10px;
     }
-
   </style>
 </head>
 
 <body class="min-h-screen text-white">
-<!-- Navbar Section -->
+<!-- Navbar -->
 <div class="navbar bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 shadow-lg px-6 py-4">
   <div class="flex-1">
     <a class="btn btn-ghost normal-case text-white text-xl font-semibold">DIU Campus Cart</a>
@@ -97,22 +85,28 @@
 <br>
 <h2 class="text-4xl font-bold text-center mb-8">Products Available for Sale</h2>
 
-<!-- Category Filter Section -->
+<!-- Category Filter -->
 <div class="container mx-auto p-6 bg-black">
-  <div class="flex justify-center mb-6 bg-black">
-    <select id="category-filter" class=" bg-black select select-bordered border-2 border-gray-300 w-full max-w-xs">
+  <div class="flex justify-center mb-6">
+    <select id="category-filter" class="bg-black select select-bordered border-2 border-gray-300 w-full max-w-xs">
+      <!-- Fixed Category Options -->
       <option value="">All Categories</option>
-      <option value="Electronics">Electronics</option>
-      <option value="Furniture">Furniture</option>
-      <option value="Books">Books</option>
-      <option value="Clothing">Clothing</option>
-      <option value="Others">Others</option>
+      <option value="electronics">Electronics</option>
+      <option value="furniture">Furniture</option>
+      <option value="books">Books</option>
+      <option value="clothing">Clothing</option>
+      <option value="others">Others</option>
+
+      <!-- Dynamic Category Options (from backend) -->
+      <th:block th:each="cat : ${categories}">
+<!--        <option th:value="${cat}" th:text="${cat}" th:selected="${cat == selectedCategory}"></option>-->
+      </th:block>
     </select>
   </div>
 
-  <!-- Products Grid Section -->
+  <!-- Product Grid -->
   <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- Products will be dynamically loaded here -->
+    <!-- JavaScript dynamically injects products here -->
   </div>
 </div>
 
@@ -122,10 +116,7 @@
 
     try {
       const response = await fetch(`/api/products?category=${category}`);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch products.");
-      }
+      if (!response.ok) throw new Error("Failed to fetch products.");
 
       const products = await response.json();
       productsContainer.innerHTML = '';
@@ -141,8 +132,7 @@
                 <span class="category-badge">${product.category}</span>
               </div>
               <div class="card-body">
-              <img src="${product.photoUrl}" alt="${product.name}" class="w-full aspect-[4/3] object-fit rounded-lg">
-
+                <img src="${product.photoUrl}" alt="${product.name}" class="w-full aspect-[4/3] object-fit rounded-lg mb-4">
                 <p class="text-sm text-gray-600 mb-4">${product.description}</p>
                 <p class="price">$${product.price}</p>
                 <p class="text-sm text-gray-600">Contact: ${product.phone}</p>
@@ -167,24 +157,25 @@
     try {
       const response = await fetch(`/api/products/${productId}/sold`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers: { "Content-Type": "application/json" }
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to update product status.");
-      }
+      if (!response.ok) throw new Error("Failed to update product status.");
 
-      loadProducts();
+      loadProducts(document.getElementById("category-filter").value);
     } catch (error) {
       console.error("Error marking product as sold:", error);
       alert("Failed to mark product as sold.");
     }
   }
 
-  window.onload = () => loadProducts();
+  // Initial load
+  window.onload = () => {
+    const selectedCategory = document.getElementById("category-filter").value;
+    loadProducts(selectedCategory);
+  };
 
+  // Category change listener
   document.getElementById("category-filter").addEventListener("change", (event) => {
     const category = event.target.value;
     loadProducts(category);

@@ -132,12 +132,12 @@
                     <span class="label-text text-white">Category</span>
                 </label>
                 <select th:field="*{category}" class="select select-bordered input-field w-full bg-black" required>
-                    <option value="" disabled>Select a category</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="furniture">Furniture</option>
-                    <option value="books">Books</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="others">Others</option>
+                    <option value="Select a category" >Select a category</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Books">Books</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Others">Others</option>
                 </select>
             </div>
 
@@ -162,12 +162,13 @@
                 <input type="number" th:field="*{price}" class="input input-bordered input-field w-full" placeholder="Enter price in BDT" required />
             </div>
 
-            <div class="form-control mb-4">
-                <label class="label text-white">
+            <div class="form-control mb-6">
+                <label class="label">
                     <span class="label-text text-white">Upload Product Image</span>
                 </label>
-                <input type="file" name="imageFile" accept="image/*" class="input input-bordered input-field w-full" required />
+                <input type="file" name="imageFile" accept="image/*" class="file-input file-input-bordered file-input-primary w-full" required />
             </div>
+
 
             <div class="mt-6">
                 <button type="submit" class="btn submit-btn w-full">Submit</button>

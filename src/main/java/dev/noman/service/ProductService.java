@@ -62,4 +62,14 @@ public class ProductService {
         }
         return "/uploads/default.jpg"; // Return default if failed
     }
+
+    public List<Product> getProductsByCategory(String category) {
+        return (List<Product>) productRepository.findByCategory(category);
+    }
+
+    public List<String> getAllCategories() {
+        // Assuming Product has a 'category' field and fetching distinct categories
+        return productRepository.findDistinctCategories();
+    }
+
 }

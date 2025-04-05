@@ -48,30 +48,28 @@ public class ProductController {
         }
 
         if (!file.isEmpty()) {
-            // Validate file type
             String fileName = file.getOriginalFilename();
             if (fileName != null && !fileName.matches(".*\\.(jpg|png|jpeg)$")) {
                 redirectAttributes.addFlashAttribute("error", "Only JPG, JPEG, and PNG files are allowed.");
                 return "redirect:/sell-product";
             }
 
-            // Generate unique file name
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
             String uniqueFileName = timestamp + "_" + fileName;
 
             try {
                 byte[] bytes = file.getBytes();
                 Path path = Paths.get(UPLOAD_DIR + uniqueFileName);
-                Files.createDirectories(path.getParent()); // Ensure directory exists
+                Files.createDirectories(path.getParent());
                 Files.write(path, bytes);
-                product.setPhotoUrl("/uploads/" + uniqueFileName);  // Save relative URL
+                product.setPhotoUrl("/uploads/" + uniqueFileName);
             } catch (IOException e) {
                 logger.severe("Failed to save image: " + e.getMessage());
                 redirectAttributes.addFlashAttribute("error", "Image upload failed!");
                 return "redirect:/sell-product";
             }
         } else {
-            product.setPhotoUrl("/uploads/default.jpg"); // Default image if none uploaded
+            product.setPhotoUrl("/uploads/default.jpg");
         }
 
         productService.saveProduct(product);
@@ -81,11 +79,20 @@ public class ProductController {
     }
 
     @GetMapping("/products/buy-products")
-    public String showBuyProductsPage(Model model) {
-        // Fetch all products and pass them to the model
-        model.addAttribute("products", productService.getAllProducts());
+    public String showBuyProductsPage(@RequestParam(value = "category", required = false) String category, Model model) {
+        if (category != null && !category.isEmpty()) {
+            model.addAttribute("products", productService.getProductsByCategory(category));
+            model.addAttribute("selectedCategory", category);
+        } else {
+            model.addAttribute("products", productService.getAllProducts());
+            model.addAttribute("selectedCategory", "All");
+        }
+
+        model.addAttribute("categories", productService.getAllCategories());
         return "buy-products";
     }
+
+
 
     @PutMapping("/api/products/{id}/sold")
     public ResponseEntity<?> markProductAsSold(@PathVariable Long id) {
