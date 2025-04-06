@@ -1,55 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" data-theme="dark" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DIU Campus Cart - Manage Users</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" />
-  <!-- Include SweetAlert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="min-h-screen bg-gray-100">
+
+<body class="min-h-screen bg-black text-white">
 
 <!-- Navbar -->
-<div class="navbar bg-white shadow-lg px-4 py-2">
+<div class="navbar bg-gray-900 shadow-md px-6 py-3">
   <div class="flex-1">
-    <a class="normal-case text-xl text-blue-600 font-semibold">DIU Campus Cart</a>
+    <a class="text-2xl font-bold text-blue-400">DIU Campus Cart</a>
   </div>
-  <div class="flex-none space-x-4">
+  <div class="flex-none">
     <a th:href="@{/admin/dashboard}" class="btn btn-error text-white">Back to Dashboard</a>
   </div>
 </div>
 
 <!-- Main Content -->
-<div class="flex flex-col items-center justify-center mt-16 px-6">
-  <h2 class="text-3xl font-bold text-gray-800 mb-4">Manage Registered Users</h2>
-  <p class="text-lg text-gray-600 text-center mb-6">View, edit, and delete users</p>
+<div class="flex flex-col items-center justify-center mt-16 px-4">
+  <h2 class="text-4xl font-extrabold text-white mb-2">Manage Users</h2>
+  <p class="text-lg text-gray-400 mb-10 text-center">View, edit, and remove registered users</p>
 
-  <!-- Users Table -->
-  <div class="overflow-x-auto w-full max-w-4xl">
-    <table class="table w-full table-zebra">
-      <thead>
+  <!-- User Table Container -->
+  <div class="overflow-x-auto w-full max-w-5xl backdrop-blur-md bg-gray-800/80 rounded-xl shadow-xl border border-gray-700 p-6">
+    <table class="table w-full text-white">
+      <thead class="text-blue-300 text-base">
       <tr>
         <th>Full Name</th>
         <th>Email</th>
-        <th>Actions</th>
+        <th class="text-center">Actions</th>
       </tr>
       </thead>
       <tbody>
-      <!-- Check if the list is empty -->
       <tr th:if="${#lists.isEmpty(users)}">
         <td colspan="3" class="text-center text-gray-500">No users registered yet.</td>
       </tr>
-      <!-- Iterate through the users list -->
-      <tr th:each="user : ${users}">
-        <td th:text="${user.fullName}">Full Name</td>
+
+      <tr th:each="user : ${users}" class="hover:bg-gray-700 transition-all duration-200">
+        <td th:text="${user.fullName}" class="font-medium">Full Name</td>
         <td th:text="${user.email}">Email</td>
-        <td>
-          <!-- Delete action button -->
-          <button class="btn btn-error btn-sm text-white delete-btn"
-                  th:attr="data-id=${user.id}"
-                  aria-label="Delete user">
+        <td class="text-center">
+          <button class="btn btn-sm btn-error text-white py-1 px-4 rounded-lg hover:bg-red-600 transition-all delete-btn"
+                  th:attr="data-id=${user.id}">
             Delete
           </button>
         </td>
@@ -59,35 +56,38 @@
   </div>
 </div>
 
+<!-- Delete Script -->
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll(".delete-btn").forEach(button => {
-          button.addEventListener("click", function() {
-              const userId = this.getAttribute("data-id");
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+      button.addEventListener("click", function () {
+        const userId = this.getAttribute("data-id");
 
-              Swal.fire({
-                  title: "Are you sure?",
-                  text: "You won't be able to revert this!",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#d33",
-                  cancelButtonColor: "#3085d6",
-                  confirmButtonText: "Yes, delete it!"
-              }).then((result) => {
-                  if (result.isConfirmed) {
-                      fetch(`/admin/deleteUser?id=${userId}`, { method: "POST" })
-                          .then(response => response.json())
-                          .then(data => {
-                              if (data.message) {
-                                  Swal.fire("Deleted!", data.message, "success")
-                                      .then(() => location.reload());
-                              }
-                          })
-                          .catch(error => console.error("Error:", error));
-                  }
-              });
-          });
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            fetch(`/admin/deleteUser?id=${userId}`, {
+              method: "POST"
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.message) {
+                  Swal.fire("Deleted!", data.message, "success")
+                    .then(() => location.reload());
+                }
+              })
+              .catch(error => console.error("Error:", error));
+          }
+        });
       });
+    });
   });
 </script>
 

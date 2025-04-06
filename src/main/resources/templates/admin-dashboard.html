@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" data-theme="dark" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,43 +9,47 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
 
-<body class="min-h-screen bg-gray-100">
+<body class="min-h-screen bg-black text-white">
 
 <!-- Navbar -->
-<div class="navbar bg-white shadow-lg px-4 py-2">
+<div class="navbar bg-gray-900 shadow-md px-6 py-3 sticky top-0 z-10">
   <div class="flex-1">
-    <a class="normal-case text-xl text-blue-600 font-semibold">DIU Campus Cart</a>
+    <a class="text-2xl font-bold text-blue-400">DIU Campus Cart</a>
   </div>
-  <div class="flex-none space-x-4">
-    <!-- Updated Logout link -->
+  <div class="flex-none">
     <a th:href="@{/admin/logout}" class="btn btn-error text-white">Logout</a>
   </div>
 </div>
 
-<div class="flex flex-col items-center justify-center mt-16 px-6">
-  <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome to the Admin Dashboard</h2>
-  <p class="text-lg text-gray-600 text-center mb-6">Manage Users and Products</p>
+<!-- Dashboard Content -->
+<div class="flex flex-col items-center justify-center mt-20 px-4 text-center">
+  <h2 class="text-4xl font-extrabold text-white mb-2">Welcome Admin</h2>
+  <p class="text-lg text-gray-400 mb-10">Manage everything from one place</p>
 
-  <!-- Card Grid -->
-  <div class="flex justify-center items-center w-full max-w-4xl gap-6 mb-6">
+  <!-- Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl px-4">
 
     <!-- Manage Users Card -->
-    <div class="card bg-indigo-600 text-white shadow-xl hover:shadow-2xl transition-transform">
-      <div class="card-body flex flex-col items-center justify-center p-8 space-y-4">
-        <i class="fas fa-users text-4xl"></i>
-        <h3 class="text-2xl font-semibold">Manage Users</h3>
-        <p>View, edit, and manage registered users.</p>
-        <a th:href="@{/admin/manage-users}" class="btn bg-white text-indigo-600 py-2 px-4 rounded-lg">Manage Users</a>
+    <div class="card shadow-xl bg-gradient-to-r from-indigo-600 to-purple-700 text-white ">
+      <div class="card-body items-center text-center p-8 space-y-4">
+        <i class="fas fa-users text-5xl"></i>
+        <h3 class="text-2xl rounded-nonefont-semibold">Manage Users</h3>
+        <p>View, edit, and manage all registered users.</p>
+        <a th:href="@{/admin/manage-users}" class="btn bg-white text-indigo-700 font-semibold hover:bg-gray-200">
+          Go to Users
+        </a>
       </div>
     </div>
 
     <!-- Manage Products Card -->
-    <div class="card bg-orange-500 text-white shadow-xl hover:shadow-2xl transition-transform">
-      <div class="card-body flex flex-col items-center justify-center p-8 space-y-4">
-        <i class="fas fa-box-open text-4xl"></i>
-        <h3 class="text-2xl font-semibold">Manage Products</h3>
-        <p>View, edit, and remove listed products.</p>
-        <a th:href="@{/admin/manage-products}" class="btn bg-white text-orange-500 py-2 px-4 rounded-lg">Manage Products</a>
+    <div class="card shadow-xl bg-gradient-to-r from-orange-500 to-red-600 text-white ">
+      <div class="card-body items-center text-center p-8 space-y-4">
+        <i class="fas fa-box-open text-5xl"></i>
+        <h3 class="text-2xl rounded-none font-semibold">Manage Products</h3>
+        <p>Update or remove products listed in the cart.</p>
+        <a th:href="@{/admin/manage-products}" class="btn bg-white text-orange-700 font-semibold hover:bg-gray-200">
+          Go to Products
+        </a>
       </div>
     </div>
 
@@ -54,5 +57,4 @@
 </div>
 
 </body>
-
 </html>

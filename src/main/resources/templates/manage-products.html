@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" data-theme="dark" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,28 +9,29 @@
   <!-- Include SweetAlert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="min-h-screen bg-gray-100">
+<body class="min-h-screen bg-black text-white">
 
 <!-- Navbar -->
-<div class="navbar bg-white shadow-lg px-4 py-2">
+<div class="navbar bg-gray-900 shadow-lg px-6 py-3 backdrop-blur-md sticky top-0 z-10">
   <div class="flex-1">
-    <a class="normal-case text-xl text-blue-600 font-semibold">DIU Campus Cart</a>
+    <a class="normal-case text-2xl font-semibold text-blue-300">DIU Campus Cart</a>
   </div>
-  <div class="flex-none space-x-4">
+  <div class="flex-none">
     <a th:href="@{/admin/dashboard}" class="btn btn-error text-white">Back to Dashboard</a>
   </div>
 </div>
 
 <!-- Main Content -->
-<div class="container mx-auto p-8">
-  <h1 class="text-3xl font-bold mb-6">Manage Products</h1>
-  <table class="min-w-full bg-white border border-gray-200">
+<div class="container mx-auto p-8 bg-gray-800/80 backdrop-blur-md rounded-lg mt-12">
+  <h1 class="text-4xl font-extrabold text-blue-300 mb-6">Manage Products</h1>
+
+  <table class="min-w-full bg-gray-900 border border-gray-700 rounded-lg shadow-lg">
     <thead>
     <tr>
-      <th class="px-4 py-2 border text-center">Product Name</th>
-      <th class="px-4 py-2 border text-center">Price</th>
-      <th class="px-4 py-2 border text-center">Image</th>
-      <th class="px-4 py-2 border text-center">Action</th>
+      <th class="px-6 py-3 border text-center text-gray-400">Product Name</th>
+      <th class="px-6 py-3 border text-center text-gray-400">Price</th>
+      <th class="px-6 py-3 border text-center text-gray-400">Image</th>
+      <th class="px-6 py-3 border text-center text-gray-400">Action</th>
     </tr>
     </thead>
     <tbody>
@@ -39,15 +40,15 @@
       <td colspan="4" class="text-center text-gray-500">No products listed yet.</td>
     </tr>
     <!-- Loop over the products list -->
-    <tr th:each="product : ${products}">
-      <td class="text-center" th:text="${product.name}">Product Name</td>
-      <td class="text-center" th:text="${product.price}">Price</td>
-      <td class="text-center">
+    <tr th:each="product : ${products}" class="hover:bg-gray-700 transition-all">
+      <td class="text-center px-4 py-3 text-gray-300" th:text="${product.name}">Product Name</td>
+      <td class="text-center px-4 py-3 text-gray-300" th:text="${product.price}">Price</td>
+      <td class="text-center px-4 py-3">
         <img th:src="${product.photoUrl}" alt="Product Image" class="w-20 h-20 object-cover rounded mx-auto"/>
       </td>
-      <td class="text-center">
+      <td class="text-center px-4 py-3">
         <!-- Delete button -->
-        <button class="bg-red-500 text-white py-1 px-2 rounded-lg delete-btn"
+        <button class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-all delete-btn"
                 th:attr="data-id=${product.id}">
           Delete
         </button>
