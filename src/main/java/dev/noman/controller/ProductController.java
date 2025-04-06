@@ -31,11 +31,15 @@ public class ProductController {
         this.productService = productService;
     }
 
+
+
     @GetMapping("/sell-product")
     public String showProductForm(Model model) {
         model.addAttribute("product", new Product());
         return "sell-product";
     }
+
+
 
     @PostMapping("/sell-product")
     public String submitProduct(@Valid @ModelAttribute Product product,
@@ -78,6 +82,12 @@ public class ProductController {
         return "redirect:/sell-product";
     }
 
+
+
+//    If a category is selected, filters products by category.
+//    If not, shows all products.
+//    Also adds all available categories to the page for filtering.
+
     @GetMapping("/products/buy-products")
     public String showBuyProductsPage(@RequestParam(value = "category", required = false) String category, Model model) {
         if (category != null && !category.isEmpty()) {
@@ -91,7 +101,6 @@ public class ProductController {
         model.addAttribute("categories", productService.getAllCategories());
         return "buy-products";
     }
-
 
 
     @PutMapping("/api/products/{id}/sold")

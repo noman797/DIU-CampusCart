@@ -23,13 +23,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE (p.soldOut = false OR p.soldOut IS NULL)")
     List<Product> findAllAvailableProducts();
 
-//    // 🔥 Get all distinct categories
-//    @Query("SELECT DISTINCT p.category FROM Product p WHERE p.category IS NOT NULL")
-//    List<String> findDistinctCategories();
-
     List<Product> findByCategoryIgnoreCase(String category);
     @Query("SELECT p FROM Product p WHERE p.category = :category AND (p.soldOut = false OR p.soldOut IS NULL)")
     List<Product> findByCategory(@Param("category") String category);
+
     @Query("SELECT DISTINCT p.category FROM Product p")
     List<String> findDistinctCategories();
 

@@ -26,6 +26,7 @@ public class HomeController {
         return "registration";
     }
 
+
     // GET: Login Page
     @GetMapping("/login")
     public String showLoginPage() {
@@ -43,6 +44,7 @@ public class HomeController {
         model.addAttribute("user", user);
         return "dashboard";
     }
+
 
     @PostMapping("/logout")
     public String logout() {

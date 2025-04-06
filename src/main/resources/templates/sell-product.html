@@ -82,7 +82,7 @@
 
 <div class="navbar bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg px-6 py-4">
     <div class="flex-1">
-        <a class="btn btn-ghost normal-case text-white text-xl font-semibold">DIU Campus Cart</a>
+        <a class="normal-case text-white text-xl font-semibold">DIU Campus Cart</a>
     </div>
     <div class="flex-none space-x-4">
         <a href="/dashboard" class="btn btn-error text-white">Dashboard</a>
@@ -133,11 +133,11 @@
                 </label>
                 <select th:field="*{category}" class="select select-bordered input-field w-full bg-black" required>
                     <option value="Select a category" >Select a category</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Furniture">Furniture</option>
-                    <option value="Books">Books</option>
-                    <option value="Clothing">Clothing</option>
-                    <option value="Others">Others</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="furniture">Furniture</option>
+                    <option value="books">Books</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="others">Others</option>
                 </select>
             </div>
 
@@ -166,8 +166,15 @@
                 <label class="label">
                     <span class="label-text text-white">Upload Product Image</span>
                 </label>
-                <input type="file" name="imageFile" accept="image/*" class="file-input file-input-bordered file-input-primary w-full" required />
+                <input
+                        type="file"
+                        name="imageFile"
+                        accept="image/*"
+                        class="file-input file-input-bordered file-input-primary bg-gray-800 text-white placeholder-white w-full"
+                        required
+                />
             </div>
+
 
 
             <div class="mt-6">

@@ -18,6 +18,8 @@ public class ProductApiController {
         this.productService = productService;
     }
 
+
+
     // Fetch products by category, or all products if no category is provided
     @GetMapping
     public List<Product> getProductsByCategory(@RequestParam(value = "category", required = false) String category) {

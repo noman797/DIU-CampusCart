@@ -14,6 +14,8 @@ public class User {
     private String email;
     private String password;
 
+
+
     // Constructors
     public User() {}
     public User(String fullName, String email, String password) {
@@ -21,6 +23,8 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
+
 
     // Getters / Setters
     public Long getId() { return id; }

@@ -52,6 +52,7 @@ public class Product {
         this.updatedAt = LocalDateTime.now();
     }
 
+
     @Column(name = "SOLD_OUT")
     private Boolean soldOut = false;  // Default value is false
 }

@@ -75,7 +75,7 @@
 <!-- Navbar -->
 <div class="navbar bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 shadow-lg px-6 py-4">
   <div class="flex-1">
-    <a class="btn btn-ghost normal-case text-white text-xl font-semibold">DIU Campus Cart</a>
+    <a class="normal-case text-white text-xl font-semibold">DIU Campus Cart</a>
   </div>
   <div class="flex-none space-x-4">
     <a href="/dashboard" class="btn btn-error text-white">Dashboard</a>
@@ -99,7 +99,7 @@
 
       <!-- Dynamic Category Options (from backend) -->
       <th:block th:each="cat : ${categories}">
-<!--        <option th:value="${cat}" th:text="${cat}" th:selected="${cat == selectedCategory}"></option>-->
+        <!--        <option th:value="${cat}" th:text="${cat}" th:selected="${cat == selectedCategory}"></option>-->
       </th:block>
     </select>
   </div>
@@ -126,23 +126,32 @@
       } else {
         products.forEach(product => {
           const productCard = `
-            <div class="card relative">
-              <div class="card-header">
-                <h3>${product.name}</h3>
-                <span class="category-badge">${product.category}</span>
-              </div>
-              <div class="card-body">
-                <img src="${product.photoUrl}" alt="${product.name}" class="w-full aspect-[4/3] object-fit rounded-lg mb-4">
-                <p class="text-sm text-gray-600 mb-4">${product.description}</p>
-                <p class="price">$${product.price}</p>
-                <p class="text-sm text-gray-600">Contact: ${product.phone}</p>
-              </div>
-              <div class="card-footer">
-                ${product.soldOut
-                  ? `<p class="sold-out">SOLD OUT</p>`
-                  : `<button class="btn btn-warning text-white mt-4" onclick="markAsSold('${product.id}')">Mark as Sold</button>`}
-              </div>
-            </div>
+            <div class="card relative h-[600px] flex flex-col">
+  <div class="card-header">
+    <h3 class="text-lg font-semibold">${product.name}</h3>
+    <!-- <span class="category-badge">${product.category}</span> -->
+  </div>
+  <div class="card-body flex-1 overflow-hidden">
+    <img src="${product.photoUrl}" alt="${product.name}" class="w-full aspect-[4/3] object-fit rounded-lg mb-2">
+    <div class="overflow-y-auto max-h-[300px] mb-2">
+      <p class="text-sm text-gray-600">${product.description}</p>
+    </div>
+    <p class="price font-bold text-base mb-1">$${product.price}</p>
+<div class="flex justify-center mt-2">
+  <p>
+    📞 Contact: ${product.phone}
+  </p>
+</div>
+
+
+  </div>
+  <div class="card-footer mt-auto">
+    ${product.soldOut
+      ? `<p class="sold-out text-red-500 font-semibold">SOLD OUT</p>`
+      : `<button class="btn btn-warning text-white mt-4" onclick="markAsSold('${product.id}')">Mark as Sold</button>`}
+  </div>
+</div>
+
           `;
           productsContainer.innerHTML += productCard;
         });
@@ -153,21 +162,21 @@
     }
   }
 
-  async function markAsSold(productId) {
-    try {
-      const response = await fetch(`/api/products/${productId}/sold`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" }
-      });
+<!--  async function markAsSold(productId) {-->
+<!--    try {-->
+<!--      const response = await fetch(`/api/products/${productId}/sold`, {-->
+<!--        method: "PUT",-->
+<!--        headers: { "Content-Type": "application/json" }-->
+<!--      });-->
 
-      if (!response.ok) throw new Error("Failed to update product status.");
+<!--      if (!response.ok) throw new Error("Failed to update product status.");-->
 
-      loadProducts(document.getElementById("category-filter").value);
-    } catch (error) {
-      console.error("Error marking product as sold:", error);
-      alert("Failed to mark product as sold.");
-    }
-  }
+<!--      loadProducts(document.getElementById("category-filter").value);-->
+<!--    } catch (error) {-->
+<!--      console.error("Error marking product as sold:", error);-->
+<!--      alert("Failed to mark product as sold.");-->
+<!--    }-->
+<!--  }-->
 
   // Initial load
   window.onload = () => {

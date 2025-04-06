@@ -9,5 +9,4 @@ public class TailSpringApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TailSpringApplication.class, args);
 	}
-//
 }

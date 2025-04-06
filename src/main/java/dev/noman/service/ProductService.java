@@ -22,12 +22,16 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+
+
     public Product saveProduct(Product product) {
         if (product.getPhotoUrl() == null || product.getPhotoUrl().isEmpty()) {
             product.setPhotoUrl("/uploads/default.jpg");  // Set default image if empty
         }
         return productRepository.save(product);
     }
+
+
 
     public Optional<Product> findProductByName(String name) {
         if (name == null || name.trim().isEmpty()) {
@@ -36,17 +40,24 @@ public class ProductService {
         return productRepository.findByNameIgnoreCase(name.trim());
     }
 
+
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
+
+
 
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
 
+
+
     public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
     }
+
+
 
     public String updateProductPhoto(MultipartFile file) {
         if (!file.isEmpty()) {
@@ -63,13 +74,18 @@ public class ProductService {
         return "/uploads/default.jpg"; // Return default if failed
     }
 
+
+
     public List<Product> getProductsByCategory(String category) {
         return (List<Product>) productRepository.findByCategory(category);
     }
+
+
 
     public List<String> getAllCategories() {
         // Assuming Product has a 'category' field and fetching distinct categories
         return productRepository.findDistinctCategories();
     }
+
 
 }

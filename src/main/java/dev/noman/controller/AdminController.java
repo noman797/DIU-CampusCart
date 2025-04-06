@@ -31,10 +31,12 @@ public class AdminController {
         this.productRepository = productRepository;
     }
 
+
     @GetMapping("/login")
     public String showLoginPage() {
         return "admin-login"; // Return the login page view
     }
+
 
     @PostMapping("/login")
     @ResponseBody
@@ -47,14 +49,17 @@ public class AdminController {
             return ResponseEntity.ok(Map.of("message", "Login successful"));
         }
 
+
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("message", "Invalid email or password"));
     }
+
 
     @GetMapping("/dashboard")
     public String showDashboard() {
         return "admin-dashboard"; // Return the dashboard page view
     }
+
 
     @GetMapping("/manage-users")
     public String manageUsers(Model model) {
@@ -63,12 +68,14 @@ public class AdminController {
         return "manage-users"; // Return the manage users page view
     }
 
+
     @GetMapping("/manage-products")
     public String manageProducts(Model model) {
         List<Product> products = productRepository.findAll(); // Fetch all products from the repository
         model.addAttribute("products", products); // Add products to the model
         return "manage-products"; // Return the manage products page view
     }
+
 
     @PostMapping("/deleteUser")
     @ResponseBody
@@ -101,4 +108,5 @@ public class AdminController {
         session.invalidate(); // Invalidate the session
         return "redirect:/admin/login"; // Redirect to the login page
     }
+
 }
