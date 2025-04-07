@@ -53,9 +53,7 @@ public class ProductService {
 
 
 
-    public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
-    }
+
 
 
 
@@ -87,5 +85,30 @@ public class ProductService {
         return productRepository.findDistinctCategories();
     }
 
+    // New method to mark product as sold
+    public String markProductAsSold(Long productId, String loggedInUserEmail) {
+        // Fetch the product by its ID from the repository
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+
+        if (optionalProduct.isEmpty()) {
+            return "Product not found!";  // If the product is not found, return a message
+        }
+
+        Product product = optionalProduct.get();
+
+        // Check if the logged-in user's email matches the product owner's email
+        if (!product.getOwnerEmail().equals(loggedInUserEmail)) {
+            return "You are not the owner of this product!";  // If the user is not the owner, return a message
+        }
+
+        // Mark the product as sold
+        product.setSoldOut(true);  // Set the 'soldOut' status to true
+        productRepository.save(product);  // Save the updated product back to the database
+
+        return "Product marked as sold!";  // Return success message
+    }
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
 
 }

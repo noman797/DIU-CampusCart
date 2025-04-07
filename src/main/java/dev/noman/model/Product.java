@@ -52,7 +52,10 @@ public class Product {
         this.updatedAt = LocalDateTime.now();
     }
 
-
     @Column(name = "SOLD_OUT")
     private Boolean soldOut = false;  // Default value is false
+
+    @Email(message = "Owner email must be valid")
+    @Column(name = "owner_email", nullable = false)
+    private String ownerEmail;  // Email of the seller
 }

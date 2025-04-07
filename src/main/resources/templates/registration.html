@@ -20,19 +20,24 @@
     body {
       background: url('/pictures/DIU CampusCart_Sign.png') no-repeat center fixed;
       background-size: cover;
-      padding-top: 90px; /* Adds space at the top */
+      padding-top: 90px;
     }
+
     .card {
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
+      background-color: rgba(255, 255, 255, 0.95);
+      color: #111;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
+
     .card input {
-      background-color: rgba(255, 255, 255, 0.2);
-      color: white;
-      border: none;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #111;
+      border: 1px solid #ccc;
     }
+
     .card input::placeholder {
-      color: rgba(255, 255, 255, 0.7);
+      color: #666;
     }
   </style>
 </head>
@@ -41,56 +46,56 @@
 <div class="card w-full max-w-md shadow-2xl p-8 rounded-2xl border border-gray-200">
   <div class="text-center mb-6">
     <img src="/pictures/logo.png" class="mx-auto w-24 sm:w-32 h-24 sm:h-32 shadow-md rounded-full" alt="DIU Logo" />
-    <h2 class="text-xl sm:text-2xl font-bold mt-4 text-white">Create Your Account</h2>
-    <p class="text-white text-sm sm:text-base">Join DIU Campus Cart today!</p>
+    <h2 class="text-xl sm:text-2xl font-bold mt-4">Create Your Account</h2>
+    <p class="text-sm sm:text-base">Join DIU Campus Cart today!</p>
   </div>
 
   <form id="register-form" class="space-y-5">
     <div>
-      <label class="block text-sm font-medium text-white mb-1">Full Name</label>
+      <label class="block text-sm font-medium mb-1">Full Name</label>
       <div class="relative">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-white">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
             <i class="fas fa-user"></i>
           </span>
         <input type="text" name="fullName" placeholder="Enter your full name" required
-               class="block w-full pl-10 pr-4 py-2.5 border-2 border-white rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+               class="block w-full pl-10 pr-4 py-2.5 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200">
       </div>
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-white mb-1">Email</label>
+      <label class="block text-sm font-medium mb-1">Email</label>
       <div class="relative">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-white">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
             <i class="fas fa-envelope"></i>
           </span>
         <input type="email" name="email" placeholder="Enter email" required
-               class="block w-full pl-10 pr-4 py-2.5 border-2 border-white rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+               class="block w-full pl-10 pr-4 py-2.5 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200">
       </div>
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-white mb-1">Password</label>
+      <label class="block text-sm font-medium mb-1">Password</label>
       <div class="relative">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-white">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
             <i class="fas fa-lock"></i>
           </span>
         <input type="password" name="password" id="password" placeholder="Create password" required
-               class="block w-full pl-10 pr-10 py-2.5 border-2 border-white rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
-        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3 text-white">
+               class="block w-full pl-10 pr-10 py-2.5 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3">
           <i class="fas fa-eye"></i>
         </button>
       </div>
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-white mb-1">Confirm Password</label>
+      <label class="block text-sm font-medium mb-1">Confirm Password</label>
       <div class="relative">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-white">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
             <i class="fas fa-lock"></i>
           </span>
         <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm password" required
-               class="block w-full pl-10 pr-10 py-2.5 border-2 border-white rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
-        <button type="button" id="toggleConfirmPassword" class="absolute inset-y-0 right-0 flex items-center pr-3 text-white">
+               class="block w-full pl-10 pr-10 py-2.5 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+        <button type="button" id="toggleConfirmPassword" class="absolute inset-y-0 right-0 flex items-center pr-3">
           <i class="fas fa-eye"></i>
         </button>
       </div>
@@ -102,15 +107,15 @@
       Create Account
     </button>
 
-    <div class="text-center text-sm text-white mt-4">
+    <div class="text-center text-sm mt-4">
       Already have an account?
       <a href="/" class="text-blue-400 hover:underline font-medium">Sign In</a>
     </div>
   </form>
 
   <script>
-    // Toggle password visibility
-    document.getElementById("togglePassword").addEventListener("click", function() {
+    // Password visibility toggle
+    document.getElementById("togglePassword").addEventListener("click", function () {
       const passwordInput = document.getElementById("password");
       const icon = this.querySelector("i");
 
@@ -125,7 +130,7 @@
       }
     });
 
-    document.getElementById("toggleConfirmPassword").addEventListener("click", function() {
+    document.getElementById("toggleConfirmPassword").addEventListener("click", function () {
       const confirmPasswordInput = document.getElementById("confirmPassword");
       const icon = this.querySelector("i");
 
@@ -140,8 +145,8 @@
       }
     });
 
-    // Check if passwords match
-    document.getElementById("confirmPassword").addEventListener("input", function() {
+    // Validate password match
+    document.getElementById("confirmPassword").addEventListener("input", function () {
       const password = document.getElementById("password").value;
       const confirmPassword = this.value;
       const errorElement = document.getElementById("passwordMatchError");
@@ -149,16 +154,14 @@
       if (password !== confirmPassword) {
         errorElement.classList.remove("hidden");
         this.classList.add("border-red-500");
-        this.classList.remove("border-white");
       } else {
         errorElement.classList.add("hidden");
         this.classList.remove("border-red-500");
-        this.classList.add("border-white");
       }
     });
 
     // Form submission
-    document.getElementById("register-form").addEventListener("submit", function(event) {
+    document.getElementById("register-form").addEventListener("submit", function (event) {
       event.preventDefault();
 
       const password = document.getElementById("password").value;
@@ -174,7 +177,6 @@
         return;
       }
 
-      // Show loading state
       Swal.fire({
         title: 'Creating your account...',
         allowOutsideClick: false,

@@ -1,86 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sell Product</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background: url('/pictures/DIU CampusCart_Sell.png') no-repeat center center/cover;
-            min-height: 100vh;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(3px);
-            overflow: hidden;
-        }
-
-        .navbar {
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: calc(100vh - 60px);
-            width: 100%;
-        }
-
-        .form-container {
-            background: rgba(30, 30, 30, 0.8);
-            border-radius: 15px;
-            padding: 2rem;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .input-field {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .input-field::placeholder {
-            color: #bbb;
-        }
-
-        .submit-btn {
-            background-color: #ff6b6b;
-            color: white;
-            font-weight: bold;
-            transition: 0.3s ease-in-out;
-        }
-
-        .submit-btn:hover {
-            background-color: #ff4f4f;
-            transform: scale(1.05);
+          background: url('/pictures/DIU CampusCart_Sell.png') no-repeat center center/cover;
+          min-height: 100vh;
         }
     </style>
 </head>
 
-<body>
+<body class="flex flex-col items-center justify-center backdrop-blur-md text-gray-900">
 
-<div class="navbar bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg px-6 py-4">
+<!-- Navbar -->
+<div class="navbar bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg px-6 py-4 fixed top-0 w-full z-50">
     <div class="flex-1">
         <a class="normal-case text-white text-xl font-semibold">DIU Campus Cart</a>
     </div>
@@ -89,50 +27,55 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="form-container">
-        <h2 class="text-3xl font-bold text-center mb-6">Sell Your Product</h2>
+<!-- Form Section -->
+<div class="w-full flex justify-center items-center min-h-screen pt-24 px-4">
+    <div class="w-full max-w-lg bg-white/80 backdrop-blur-lg border border-gray-200 shadow-2xl rounded-2xl p-8">
 
+        <h2 class="text-4xl font-extrabold text-center text-gray-800 mb-6">Sell Your Product</h2>
+
+        <!-- SweetAlert Success -->
         <div th:if="${success}">
             <script th:inline="javascript">
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Product uploaded successfully!',
-                    confirmButtonText: 'OK'
+                  icon: 'success',
+                  title: 'Success!',
+                  text: 'Product uploaded successfully!',
+                  confirmButtonText: 'OK'
                 }).then(() => {
-                    setTimeout(() => {
-                        window.location.href = '/sell-product';
-                    }, 500);
+                  setTimeout(() => {
+                    window.location.href = '/sell-product';
+                  }, 500);
                 });
             </script>
         </div>
 
+        <!-- SweetAlert Error -->
         <div th:if="${error}">
             <script th:inline="javascript">
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Oops!',
-                    text: 'Something went wrong. Please try again.',
-                    confirmButtonText: 'OK'
+                  icon: 'error',
+                  title: 'Oops!',
+                  text: 'Something went wrong. Please try again.',
+                  confirmButtonText: 'OK'
                 });
             </script>
         </div>
 
-        <form id="productForm" th:action="@{/sell-product}" th:object="${product}" method="post" enctype="multipart/form-data">
+        <!-- Form Starts -->
+        <form th:action="@{/sell-product}" th:object="${product}" method="post" enctype="multipart/form-data">
             <div class="form-control mb-4">
-                <label class="label text-white">
-                    <span class="label-text text-white">Product Name</span>
+                <label class="label">
+                    <span class="label-text font-medium text-gray-900">Product Name</span>
                 </label>
-                <input type="text" th:field="*{name}" class="input input-bordered input-field w-full" placeholder="Enter product name" required />
+                <input type="text" th:field="*{name}" class="input input-bordered w-full bg-white text-gray-900" placeholder="Enter product name" required />
             </div>
 
             <div class="form-control mb-4">
-                <label class="label text-white">
-                    <span class="label-text text-white">Category</span>
+                <label class="label">
+                    <span class="label-text font-medium text-gray-900">Category</span>
                 </label>
-                <select th:field="*{category}" class="select select-bordered input-field w-full bg-black" required>
-                    <option value="Select a category" >Select a category</option>
+                <select th:field="*{category}" class="select select-bordered w-full bg-white text-gray-900" required>
+                    <option value="Select a category">Select a category</option>
                     <option value="electronics">Electronics</option>
                     <option value="furniture">Furniture</option>
                     <option value="books">Books</option>
@@ -142,45 +85,39 @@
             </div>
 
             <div class="form-control mb-4">
-                <label class="label text-white">
-                    <span class="label-text text-white">Phone Number</span>
+                <label class="label">
+                    <span class="label-text font-medium text-gray-900">Phone Number</span>
                 </label>
-                <input type="tel" th:field="*{phone}" class="input input-bordered input-field w-full" placeholder="Enter your phone number" required />
+                <input type="tel" th:field="*{phone}" class="input input-bordered w-full bg-white text-gray-900" placeholder="Enter your phone number" required />
             </div>
 
             <div class="form-control mb-4">
-                <label class="label text-white">
-                    <span class="label-text text-white">Product Description</span>
+                <label class="label">
+                    <span class="label-text font-medium text-gray-900">Product Description</span>
                 </label>
-                <textarea th:field="*{description}" class="textarea textarea-bordered input-field w-full" rows="4" placeholder="Enter product description" required></textarea>
+                <textarea th:field="*{description}" class="textarea textarea-bordered w-full bg-white text-gray-900" placeholder="Enter product description" rows="4" required></textarea>
             </div>
 
             <div class="form-control mb-4">
-                <label class="label text-white">
-                    <span class="label-text text-white">Price (BDT)</span>
+                <label class="label">
+                    <span class="label-text font-medium text-gray-900">Price (BDT)</span>
                 </label>
-                <input type="number" th:field="*{price}" class="input input-bordered input-field w-full" placeholder="Enter price in BDT" required />
+                <input type="number" th:field="*{price}" class="input input-bordered w-full bg-white text-gray-900" placeholder="Enter price in BDT" required />
             </div>
 
             <div class="form-control mb-6">
                 <label class="label">
-                    <span class="label-text text-white">Upload Product Image</span>
+                    <span class="label-text font-medium text-gray-900">Upload Product Image</span>
                 </label>
-                <input
-                        type="file"
-                        name="imageFile"
-                        accept="image/*"
-                        class="file-input file-input-bordered file-input-primary bg-gray-800 text-white placeholder-white w-full"
-                        required
-                />
+                <input type="file" name="imageFile" accept="image/*"
+                       class="file-input file-input-bordered file-input-primary bg-white text-gray-900 w-full" required />
             </div>
-
-
 
             <div class="mt-6">
-                <button type="submit" class="btn submit-btn w-full">Submit</button>
+                <button type="submit" class="btn btn-primary w-full text-white font-semibold tracking-wide">Submit</button>
             </div>
         </form>
+
     </div>
 </div>
 

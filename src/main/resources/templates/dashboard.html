@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
     <style>
         body {
             background-image: url('/pictures/DIU CampusCart.png');
@@ -34,34 +35,33 @@
 </div>
 
 <div class="flex flex-col items-center justify-center mt-16 px-6">
-    <h2 class="text-3xl font-bold text-white mb-4 drop-shadow-md">Welcome to Your Dashboard</h2>
-    <p class="text-lg text-white font-semibold text-center mb-6 drop-shadow-md">Buy and Sell Products Easily</p>
+    <h2 class="text-3xl font-bold text-black mb-4 drop-shadow-md">Welcome to Your Dashboard</h2>
+    <p class="text-lg text-black font-semibold text-center mb-6 drop-shadow-md">Buy and Sell Products Easily</p>
 
-
-    <!-- Card Grid -->
-    <div class="flex justify-center items-center w-full max-w-4xl gap-6 mb-6">
-
+    <div class="flex flex-col space-y-4 items-center"> <!-- Adds a small space between cards -->
         <!-- Buy Product Card -->
-        <div class="card bg-green-500 text-white shadow-xl hover:shadow-2xl transition-transform">
-            <div class="card-body flex flex-col items-center justify-center p-8 space-y-4">
-                <i class="fas fa-shopping-cart text-4xl"></i>
+        <a href="/products/buy-products" class="card shadow-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white">
+            <div class="card-body items-center text-center p-8 space-y-4">
+                <i class="fas fa-shopping-cart text-5xl"></i>
                 <h3 class="text-2xl font-semibold">Buy Product</h3>
                 <p>Find amazing products available for purchase.</p>
-                <a href="/products/buy-products" class="btn bg-white text-green-500 py-2 px-4 rounded-lg">Start Shopping</a>
             </div>
-        </div>
+        </a>
 
         <!-- Sell Product Card -->
-        <div class="card bg-blue-600 text-white shadow-xl hover:shadow-2xl transition-transform">
-            <div class="card-body flex flex-col items-center justify-center p-8 space-y-4">
-                <i class="fas fa-upload text-4xl"></i>
+        <a href="/sell-product" class="card shadow-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white">
+            <div class="card-body items-center text-center p-8 space-y-4">
+                <i class="fas fa-upload text-5xl"></i>
                 <h3 class="text-2xl font-semibold">Sell Product</h3>
                 <p>List your products for sale quickly and easily.</p>
-                <a href="/sell-product" class="btn bg-white text-blue-600 py-2 px-4 rounded-lg">Start Selling</a>
             </div>
-        </div>
-
+        </a>
     </div>
+
+
+
+</div>
+
 </div>
 </body>
 </html>

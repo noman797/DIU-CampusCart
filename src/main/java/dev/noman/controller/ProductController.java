@@ -2,6 +2,8 @@ package dev.noman.controller;
 
 import dev.noman.model.Product;
 import dev.noman.service.ProductService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,26 +32,36 @@ public class ProductController {
         this.productService = productService;
     }
 
-
-
+    // Show sell form
     @GetMapping("/sell-product")
     public String showProductForm(Model model) {
         model.addAttribute("product", new Product());
         return "sell-product";
     }
 
-
-
+    // Submit a product (add owner email from session)
     @PostMapping("/sell-product")
     public String submitProduct(@Valid @ModelAttribute Product product,
                                 BindingResult bindingResult,
                                 @RequestParam("imageFile") MultipartFile file,
-                                RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes,
+                                HttpSession session) {
+
+        // Set ownerEmail from logged-in user
+        String userEmail = (String) session.getAttribute("userEmail");
+        if (userEmail == null || !userEmail.endsWith("@diu.edu.bd")) {
+            redirectAttributes.addFlashAttribute("error", "Unauthorized access.");
+            return "redirect:/sell-product";
+        }
+
+        product.setOwnerEmail(userEmail);
+
         if (bindingResult.hasErrors()) {
             logger.warning("Validation failed: " + bindingResult.getAllErrors());
             return "sell-product";
         }
 
+        // Handle image upload
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             if (fileName != null && !fileName.matches(".*\\.(jpg|png|jpeg)$")) {
@@ -76,18 +87,14 @@ public class ProductController {
             product.setPhotoUrl("/uploads/default.jpg");
         }
 
+        // Save product to the database
         productService.saveProduct(product);
         redirectAttributes.addFlashAttribute("success", "Product added successfully!");
         logger.info("Product saved successfully: " + product);
         return "redirect:/sell-product";
     }
 
-
-
-//    If a category is selected, filters products by category.
-//    If not, shows all products.
-//    Also adds all available categories to the page for filtering.
-
+    // Buy Products page with category filter
     @GetMapping("/products/buy-products")
     public String showBuyProductsPage(@RequestParam(value = "category", required = false) String category, Model model) {
         if (category != null && !category.isEmpty()) {
@@ -102,16 +109,26 @@ public class ProductController {
         return "buy-products";
     }
 
-
+    // Mark product as sold (only by owner)
     @PutMapping("/api/products/{id}/sold")
-    public ResponseEntity<?> markProductAsSold(@PathVariable Long id) {
+    public ResponseEntity<?> markProductAsSold(@PathVariable Long id, HttpSession session) {
         Optional<Product> productOpt = productService.getProductById(id);
+
         if (productOpt.isPresent()) {
             Product product = productOpt.get();
+
+            // Get logged-in user email from session
+            String userEmail = (String) session.getAttribute("userEmail");
+            if (userEmail == null || !userEmail.equals(product.getOwnerEmail())) {
+                return ResponseEntity.status(403).body("You are not the owner of this product.");
+            }
+
+            // Mark the product as sold
             product.setSoldOut(true);
             productService.saveProduct(product);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Product marked as sold.");
         }
+
         return ResponseEntity.notFound().build();
     }
 }
