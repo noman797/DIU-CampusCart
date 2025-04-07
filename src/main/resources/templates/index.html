@@ -1,178 +1,166 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="light">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DIU Campus Cart - Login</title>
 
   <!-- TailwindCSS & DaisyUI -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet"/>
 
   <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
     body {
-      background: url('/pictures/DIU CampusCart_Sign.png') no-repeat center fixed;
+      background: url('/pictures/DIU CampusCart_Sign.png') no-repeat center center fixed;
       background-size: cover;
     }
+
     .card {
-      background-color: rgba(255, 255, 255, 0.95); /* সাদা ব্যাকগ্রাউন্ড + transparency */
-      color: #111; /* গাঢ় কালো text */
-      backdrop-filter: blur(5px); /* হালকা blur effect */
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* shadow */
+      background-color: rgba(255, 255, 255, 0.95);
+      color: #111;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
+
     .card input {
       background-color: rgba(255, 255, 255, 0.8);
       color: #111;
       border: 1px solid #ccc;
     }
+
     .card input::placeholder {
       color: #666;
     }
   </style>
-
 </head>
 
-<body class="flex items-center justify-center min-h-screen px-4 sm:px-0">
-<div class="card w-full max-w-md shadow-2xl p-8 rounded-2xl border border-gray-200">
-  <div class="text-center mb-6">
-    <img src="pictures/logo.png" class="mx-auto w-24 sm:w-32 h-24 sm:h-32 shadow-md rounded-full" alt="DIU Logo" />
-    <h2 class="text-xl sm:text-2xl font-bold mt-4">Welcome Back</h2>
-    <p class="text-sm sm:text-base">Sign in to explore DIU Campus Cart</p>
+<body class="min-h-screen flex flex-col">
+
+<!-- Main Content Wrapper -->
+<div class="flex-grow flex justify-center items-center px-4 mt-20">
+  <!-- Login Form Card -->
+  <div class="card w-full max-w-md shadow-2xl p-8 rounded-2xl border border-gray-200">
+    <div class="text-center mb-6">
+      <img src="/pictures/logo.png" class="mx-auto w-24 sm:w-32 h-24 sm:h-32 shadow-md rounded-full" alt="DIU Logo" />
+      <h2 class="text-xl sm:text-2xl font-bold mt-4">Welcome Back</h2>
+      <p class="text-sm sm:text-base">Sign in to explore DIU Campus Cart</p>
+    </div>
+
+    <form id="login-form" class="space-y-5">
+      <!-- Email -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Email</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3"><i class="fas fa-envelope"></i></span>
+          <input type="email" id="email" name="email" placeholder="Enter email" required
+                 class="block w-full pl-10 pr-4 py-2.5 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Password</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3"><i class="fas fa-lock"></i></span>
+          <input type="password" id="password" name="password" placeholder="Enter password" required
+                 class="block w-full pl-10 pr-10 py-2.5 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+          <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Remember & Forgot -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input type="checkbox" id="remember" class="h-4 w-4 text-blue-600 focus:ring-blue-500 rounded">
+          <label for="remember" class="ml-2 block text-sm">Remember me</label>
+        </div>
+        <a href="/forgot-password" class="text-sm text-blue-400 hover:underline">Forgot password?</a>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit"
+              class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300 font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+        Sign In
+      </button>
+
+      <!-- Register -->
+      <div class="text-center text-sm mt-4">
+        Don't have an account?
+        <a href="/register" class="text-blue-400 hover:underline font-medium">Create Account</a>
+      </div>
+    </form>
   </div>
+</div>
 
-  <form id="login-form" class="space-y-5">
-    <div>
-      <label class="block text-sm font-medium mb-1">Email</label>
-      <div class="relative">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-            <i class="fas fa-envelope"></i>
-          </span>
-        <input type="email" id="email" name="email" placeholder="Enter email" required
-               class="block w-full pl-10 pr-4 py-2.5 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200">
-      </div>
-    </div>
+<footer class="mt-auto w-full text-center p-6 bg-white text-gray-800 rounded-t-lg shadow-lg">
+  <p class="text-sm">
+    © 2025 <span class="font-semibold text-blue-600">DIU Campus Cart</span>. All rights reserved.
+  </p>
 
-    <div>
-      <label class="block text-sm font-medium mb-1">Password</label>
-      <div class="relative">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-            <i class="fas fa-lock"></i>
-          </span>
-        <input type="password" id="password" name="password" placeholder="Enter password" required
-               class="block w-full pl-10 pr-10 py-2.5 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-all duration-200">
-        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3">
-          <i class="fas fa-eye"></i>
-        </button>
-      </div>
-    </div>
+  <div class="mt-2 flex justify-center space-x-6">
+    <a href="https://facebook.com" target="_blank" class="text-blue-600 hover:text-blue-400 transition duration-300">
+      <i class="fab fa-facebook text-lg"></i>
+    </a>
+    <a href="https://twitter.com" target="_blank" class="text-blue-600 hover:text-sky-400 transition duration-300">
+      <i class="fab fa-twitter text-lg"></i>
+    </a>
+    <a href="https://github.com/noman797" target="_blank" class="text-blue-600 hover:text-gray-500 transition duration-300">
+      <i class="fab fa-github text-lg"></i>
+    </a>
+  </div>
+</footer>
 
-    <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <input type="checkbox" id="remember" class="h-4 w-4 text-blue-600 focus:ring-blue-500 rounded">
-        <label for="remember" class="ml-2 block text-sm">Remember me</label>
-      </div>
-      <a href="/forgot-password" class="text-sm text-blue-400 hover:underline">Forgot password?</a>
-    </div>
 
-    <button type="submit"
-            class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300 font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-      Sign In
-    </button>
 
-    <div class="text-center text-sm mt-4">
-      Don't have an account?
-      <a href="/register" class="text-blue-400 hover:underline font-medium">Create Account</a>
-    </div>
-  </form>
+<!-- Script Section (same as before) -->
+<script>
+  document.getElementById("togglePassword").addEventListener("click", function () {
+    const passwordInput = document.getElementById("password");
+    const icon = this.querySelector("i");
+    passwordInput.type === "password" ? (passwordInput.type = "text", icon.classList.replace("fa-eye", "fa-eye-slash"))
+                                      : (passwordInput.type = "password", icon.classList.replace("fa-eye-slash", "fa-eye"));
+  });
 
-  <script>
-    // Toggle password visibility
-    document.getElementById("togglePassword").addEventListener("click", function() {
-      const passwordInput = document.getElementById("password");
-      const icon = this.querySelector("i");
+  document.getElementById("login-form").addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    if (!email || !password) {
+      Swal.fire({ icon: 'error', title: 'Missing Info', text: 'Please fill out all fields.' });
+      return;
+    }
+    Swal.fire({ title: 'Signing in...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
-      } else {
-        passwordInput.type = "password";
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
-      }
-    });
-
-    // Form submission
-    document.getElementById("login-form").addEventListener("submit", async function(event) {
-      event.preventDefault();
-
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      if (!email || !password) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Missing Information',
-          text: 'Please fill out all fields.',
-          confirmButtonColor: '#3085d6'
-        });
-        return;
-      }
-
-      // Show loading state
-      Swal.fire({
-        title: 'Signing in...',
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
       });
 
-      try {
-        const response = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, password })
+      if (res.ok) {
+        Swal.fire({ icon: 'success', title: 'Login Successful', text: 'Welcome back!' }).then(() => {
+          window.location.href = "/dashboard";
         });
-
-        if (response.ok) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Login Successful!',
-            text: 'Welcome back to DIU Campus Cart.',
-            confirmButtonColor: '#3085d6'
-          }).then(() => {
-            window.location.href = "/dashboard";
-          });
-        } else {
-          const errorData = await response.json();
-          Swal.fire({
-            icon: 'error',
-            title: 'Login Failed',
-            text: errorData.message || 'Invalid email or password.',
-            confirmButtonColor: '#3085d6'
-          });
-        }
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Connection Error',
-          text: 'An error occurred. Please try again later.',
-          confirmButtonColor: '#3085d6'
-        });
-        console.error("Error:", error);
+      } else {
+        const error = await res.json();
+        Swal.fire({ icon: 'error', title: 'Login Failed', text: error.message || 'Invalid email or password.' });
       }
-    });
-  </script>
-</div>
+    } catch (err) {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Something went wrong. Please try again.' });
+      console.error(err);
+    }
+  });
+</script>
+
 </body>
+
 </html>

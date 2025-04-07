@@ -5,9 +5,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DIU Campus Cart - Dashboard</title>
+
+    <!-- Tailwind & DaisyUI -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         body {
@@ -20,25 +27,28 @@
 </head>
 
 <body class="min-h-screen bg-gray-100">
+
 <!-- Navbar -->
 <div class="navbar bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg px-4 py-2">
     <div class="flex-1">
         <a class="normal-case text-xl text-white font-semibold">DIU Campus Cart</a>
     </div>
     <div class="flex-none space-x-4">
-<!--        <span class="text-gray-800 font-semibold" th:text="'Welcome, ' + ${user.fullName}"></span>-->
-        <form th:action="@{/logout}" method="post">
-            <button type="submit" class="btn btn-error text-white" th:onclick="window.location='/';">Logout</button>
-        </form>
+        <span class="text-white font-semibold" th:text="|Welcome, ${userName}|">Welcome, User</span>
 
+        <!-- Logout Form -->
+        <form id="logoutForm" th:action="@{/logout}" method="post">
+            <button type="button" class="btn btn-error text-white" onclick="confirmLogout()">Logout</button>
+        </form>
     </div>
 </div>
 
+<!-- Dashboard Content -->
 <div class="flex flex-col items-center justify-center mt-16 px-6">
     <h2 class="text-3xl font-bold text-black mb-4 drop-shadow-md">Welcome to Your Dashboard</h2>
     <p class="text-lg text-black font-semibold text-center mb-6 drop-shadow-md">Buy and Sell Products Easily</p>
 
-    <div class="flex flex-col space-y-4 items-center"> <!-- Adds a small space between cards -->
+    <div class="flex flex-col space-y-4 items-center">
         <!-- Buy Product Card -->
         <a href="/products/buy-products" class="card shadow-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white">
             <div class="card-body items-center text-center p-8 space-y-4">
@@ -57,11 +67,27 @@
             </div>
         </a>
     </div>
-
-
-
 </div>
 
-</div>
+<!-- SweetAlert Logout Script -->
+<script>
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You will be logged out of DIU Campus Cart.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, logout',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logoutForm').submit();
+            }
+        });
+    }
+</script>
+
 </body>
 </html>

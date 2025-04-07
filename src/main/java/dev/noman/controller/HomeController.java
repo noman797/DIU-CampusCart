@@ -1,6 +1,7 @@
 package dev.noman.controller;
 
 import dev.noman.model.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import dev.noman.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +34,12 @@ public class HomeController {
         return "login";
     }
 
-    // GET: Dashboard Page
     @GetMapping("/dashboard")
-    public String showDashboard(Model model) {
-        // Example user data
-        User user = new User();
-        user.setFullName("John Doe");
-        user.setEmail("john@diu.edu.bd");
-
-        model.addAttribute("user", user);
+    public String showDashboard(HttpSession session, Model model) {
+        String userName = (String) session.getAttribute("userName");
+        model.addAttribute("userName", userName);  // 👈 Send to Thymeleaf
         return "dashboard";
     }
-
 
     @PostMapping("/logout")
     public String logout() {

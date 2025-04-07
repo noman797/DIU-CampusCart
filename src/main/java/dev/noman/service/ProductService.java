@@ -51,12 +51,6 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-
-
-
-
-
-
     public String updateProductPhoto(MultipartFile file) {
         if (!file.isEmpty()) {
             try {

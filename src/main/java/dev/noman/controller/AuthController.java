@@ -65,8 +65,9 @@ public class AuthController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        // ✅ Save user email in session after successful login
+        // ✅ Save user email and name in session after successful login
         session.setAttribute("userEmail", user.getEmail());
+        session.setAttribute("userName", user.getName());  // Save the user's name
 
         response.put("message", "Login successful!");
         return ResponseEntity.ok(response);

@@ -10,7 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 script -->
   <style>
     body {
-      background: url('/pictures/DIU CampusCart_Pro.png') no-repeat center fixed;
+      background: white;
       background-size: cover;
     }
 
@@ -97,7 +97,7 @@
       <option value="electronics">Electronics</option>
       <option value="furniture">Furniture</option>
       <option value="books">Books</option>
-      <option value="clothing">Clothing</option>
+<!--      <option value="clothing">Clothing</option>-->
       <option value="others">Others</option>
     </select>
   </div>
@@ -177,7 +177,7 @@
         Swal.fire('Marked as Sold!', '', 'success');
       } else {
         // If the API call fails, show an error message in SweetAlert2 itself
-        Swal.fire('Failed!', 'Could not mark as sold. Please try again.', 'error');
+        Swal.fire('Failed!', 'You are not the seller and cannot mark this item as sold.', 'error');
       }
     } catch (error) {
       console.error("Error marking product as sold:", error);
