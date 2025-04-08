@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -16,37 +17,42 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-
-    // Method to register a new user
     public String registerUser(User user) {
-        // 1) @diu.edu.bd check
+        // Check if the email is a valid DIU email
         if (!user.getEmail().endsWith("@diu.edu.bd")) {
             return "Only DIU email addresses are allowed!";
         }
 
-
-        // 2) Password length check
+        // Check if the password is strong enough
         if (user.getPassword() == null || user.getPassword().length() < 6) {
             return "Password must be at least 6 characters!";
         }
 
-
-        // 3) Check for existing email
+        // Check if the user already exists in the database
         Optional<User> existing = userRepository.findByEmail(user.getEmail());
         if (existing.isPresent()) {
             return "Email already in use!";
         }
 
-
-        // 4) Encrypt (hash) password before save
+        // Encrypt the password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        // Set the user to pending status and generate a verification token
+        user.setStatus("PENDING");
+        user.setVerificationToken(UUID.randomUUID().toString());
 
-        // Save the user to the database
+        // Save user to the database
         userRepository.save(user);
-        return "Registration successful!";
+
+        // Send the verification email
+        emailService.sendVerificationEmail(user.getEmail(), user.getVerificationToken());
+
+        return "Registration successful! Check your email to verify your account.";
     }
 
 
