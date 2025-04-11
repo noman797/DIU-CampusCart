@@ -31,6 +31,12 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    // Fetch single product details
+    public Optional<Product> getProductDetailsById(Long id) {
+        return productRepository.findById(id);
+    }
+
+
 
 
     public Optional<Product> findProductByName(String name) {

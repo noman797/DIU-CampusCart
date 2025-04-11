@@ -131,4 +131,16 @@ public class ProductController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/product/{id}")
+    public String viewProductDetails(@PathVariable Long id, Model model) {
+        Optional<Product> product = productService.getProductById(id);
+        if (product.isPresent()) {
+            model.addAttribute("product", product.get());
+            return "product-details";
+        } else {
+            return "redirect:/buy-products";
+        }
+    }
+
 }

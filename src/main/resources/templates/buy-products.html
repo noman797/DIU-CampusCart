@@ -1,80 +1,16 @@
+<!-- buy-products.html -->
 <!DOCTYPE html>
 <html lang="en" data-theme="light" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buy Products</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 script -->
-  <style>
-    body {
-      background: white;
-      background-size: cover;
-    }
-
-    .navbar {
-      background: rgba(0, 0, 0, 0.7);
-    }
-
-    .card {
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(2px);
-    }
-
-    .card-header {
-      text-align: center;
-    }
-
-    .card-header h3 {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #222;
-    }
-
-    .card-body {
-      text-align: center;
-      color: #333;
-      flex-grow: 1;
-    }
-
-    .card-footer {
-      text-align: center;
-    }
-
-    .price {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #38bdf8;
-    }
-
-    .sold-out {
-      color: #ef4444;
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-
-    .category-badge {
-      background-color: #4c51bf;
-      color: #fff;
-      font-size: 0.9rem;
-      padding: 5px 10px;
-      border-radius: 20px;
-      margin-top: 10px;
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
 <body class="min-h-screen text-white">
+
 <!-- Navbar -->
 <div class="navbar bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 shadow-lg px-6 py-4">
   <div class="flex-1">
@@ -92,113 +28,85 @@
 <div class="container mx-auto p-6 bg-white bg-opacity-90 rounded-xl">
   <div class="flex justify-center mb-6">
     <select id="category-filter"
-            class="bg-gray-100 text-gray-800 select select-bordered border-2 border-gray-400 shadow-md w-full max-w-xs hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300">
+            class="bg-gray-100 text-gray-800 select select-bordered border-2 border-gray-400 shadow-md w-full max-w-xs">
       <option value="">All Categories</option>
       <option value="electronics">Electronics</option>
       <option value="furniture">Furniture</option>
       <option value="books">Books</option>
-<!--      <option value="clothing">Clothing</option>-->
       <option value="others">Others</option>
     </select>
   </div>
 
   <!-- Product Grid -->
   <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- JavaScript dynamically injects products here -->
+    <!-- JS will inject product cards -->
   </div>
 </div>
 
 <script>
   async function loadProducts(category = "") {
-    const productsContainer = document.getElementById("products-container");
-
+    const container = document.getElementById("products-container");
     try {
-      // Fetch products with the selected category
-      const response = await fetch(`/api/products?category=${category}`);
-      if (!response.ok) throw new Error("Failed to fetch products.");
-
-      const products = await response.json();
-      productsContainer.innerHTML = '';
+      const res = await fetch(`/api/products?category=${category}`);
+      const products = await res.json();
+      container.innerHTML = "";
 
       if (products.length === 0) {
-        productsContainer.innerHTML = "<p class='text-center text-lg text-gray-600'>No products available.</p>";
-      } else {
-        products.forEach(product => {
-          const productCard = `
-            <div class="card relative h-[600px] flex flex-col">
-              <div class="card-header">
-                <h3 class="text-lg font-semibold">${product.name}</h3>
-              </div>
-              <div class="card-body flex-1 overflow-hidden">
-                <img src="${product.photoUrl}" alt="${product.name}" class="w-full aspect-[4/3] object-fit rounded-lg mb-2">
-                <div class="overflow-y-auto max-h-[300px] mb-2">
-                  <p class="text-sm text-gray-700">${product.description}</p>
-                </div>
-                <p class="price font-bold text-base mb-1">$${product.price}</p>
-                <div class="flex justify-center mt-2">
-                  <p>📞 Contact: ${product.phone}</p>
-                </div>
-              </div>
-              <div class="card-footer mt-auto">
-                ${product.soldOut
-                ? `<p class="sold-out text-red-500 font-semibold">SOLD OUT</p>`
-                : `<button class="btn btn-warning text-white mt-4" onclick="markAsSold('${product.id}')">Mark as Sold</button>`}
-              </div>
-            </div>
-          `;
-          productsContainer.innerHTML += productCard;
-        });
+        container.innerHTML = "<p class='text-center text-lg text-gray-600'>No products available.</p>";
+        return;
       }
-    } catch (error) {
-      console.error("Error loading products:", error);
-      productsContainer.innerHTML = "<p class='text-center text-lg text-red-600'>Oops! Something went wrong while loading products. Please try again later.</p>";
+
+      products.forEach(product => {
+        const card = `
+          <div class="card relative h-[550px] flex flex-col bg-white text-black p-4 rounded-lg shadow-lg">
+            <div class="card-header text-center font-bold text-lg">${product.name}</div>
+            <div class="card-body flex-1 overflow-hidden text-center">
+              <img src="${product.photoUrl}" class="w-full aspect-[4/3] object-cover rounded mb-2" />
+
+              <p class="price font-bold text-base mb-1 text-blue-500">${product.price} Taka</p>
+            </div>
+            <div class="card-footer text-center mt-auto">
+              <a href="/product/${product.id}" class="btn btn-primary mt-2">View Details</a>
+              ${product.soldOut ? `<p class="text-red-600 font-semibold mt-2">SOLD OUT</p>`
+                                 : `<button onclick="markAsSold('${product.id}')" class="btn btn-warning text-white mt-2">Mark as Sold</button>`}
+            </div>
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+
+    } catch (err) {
+      container.innerHTML = "<p class='text-center text-red-600'>Error loading products.</p>";
     }
   }
 
   async function markAsSold(productId) {
-  // SweetAlert2 confirmation dialog
-  const result = await Swal.fire({
-    title: 'Are you sure?',
-    text: "Do you want to mark this product as sold?",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, mark as sold!',
-    cancelButtonText: 'Cancel',
-  });
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to mark this product as sold?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, mark as sold!',
+    });
 
-  if (result.isConfirmed) {
-    try {
-      const response = await fetch(`/api/products/${productId}/sold`, {
-        method: 'PUT',
-      });
-
-      if (response.ok) {
-        loadProducts(); // Reload products to reflect changes
-        Swal.fire('Marked as Sold!', '', 'success');
+    if (result.isConfirmed) {
+      const res = await fetch(`/api/products/${productId}/sold`, { method: 'PUT' });
+      if (res.ok) {
+        loadProducts();
+        Swal.fire('Success', 'Product marked as sold.', 'success');
       } else {
-        // If the API call fails, show an error message in SweetAlert2 itself
-        Swal.fire('Failed!', 'You are not the seller and cannot mark this item as sold.', 'error');
+        Swal.fire('Failed', 'You are not the seller!', 'error');
       }
-    } catch (error) {
-      console.error("Error marking product as sold:", error);
-      // Show error message if something goes wrong in the request
-      Swal.fire('Error!', 'An error occurred while marking the product as sold.', 'error');
     }
   }
-}
 
-  // Initial load (ensure category is passed correctly)
   window.onload = () => {
-    const selectedCategory = document.getElementById("category-filter").value;
-    loadProducts(selectedCategory); // Load products on page load
+    loadProducts();
   };
 
-  // Category change listener
-  document.getElementById("category-filter").addEventListener("change", (event) => {
-    const category = event.target.value;
-    loadProducts(category); // Load products based on selected category
+  document.getElementById("category-filter").addEventListener("change", e => {
+    loadProducts(e.target.value);
   });
 </script>
 </body>
-
 </html>

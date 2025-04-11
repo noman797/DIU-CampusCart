@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6 text-center">
+<div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-6">
+    <h2 class="text-3xl font-bold mb-4 text-center" th:text="${product.name}">Product Name</h2>
+    <img class="w-full rounded-lg mb-4" th:src="${product.photoUrl}" alt="Product Image" />
+
+    <p class="text-gray-700 mb-2"><strong>Description:</strong> <span th:text="${product.description}"></span></p>
+    <p class="text-blue-600 font-semibold text-xl mb-2" th:text="${product.price} + ' Taka'">Price</p>
+    <p class="mb-2"><strong>Contact:</strong> <span th:text="${product.phone}"></span></p>
+<!--    <p class="mb-2"><strong>Category:</strong> <span th:text="${product.category}"></span></p>-->
+    <p th:if="${product.soldOut}" class="text-red-500 font-bold text-lg">This product is SOLD OUT</p>
+</div>
+</body>
+</html>
