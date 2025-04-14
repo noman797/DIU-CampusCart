@@ -43,29 +43,46 @@
     </div>
 </div>
 
-<!-- Dashboard Content -->
-<div class="flex flex-col items-center justify-center mt-16 px-6">
-    <h2 class="text-3xl font-bold text-black mb-4 drop-shadow-md">Welcome to Your Dashboard</h2>
-    <p class="text-lg text-black font-semibold text-center mb-6 drop-shadow-md">Buy and Sell Products Easily</p>
+<!-- Dashboard Cards (Centered in Page - Enhanced UI) -->
+<div class="flex justify-center mt-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl w-full px-4">
 
-    <div class="flex flex-col space-y-4 items-center">
         <!-- Buy Product Card -->
-        <a href="/products/buy-products" class="card shadow-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white">
-            <div class="card-body items-center text-center p-8 space-y-4">
-                <i class="fas fa-shopping-cart text-5xl"></i>
-                <h3 class="text-2xl font-semibold">Buy Product</h3>
-                <p>Find amazing products available for purchase.</p>
+        <a href="/products/buy-products" class="card bg-gradient-to-r from-green-500 to-emerald-600 shadow-xl text-white transition-transform transform hover:scale-105 duration-300">
+            <div class="card-body items-center text-center p-10 space-y-3">
+                <i class="fas fa-shopping-cart text-6xl drop-shadow-lg"></i>
+                <h3 class="text-3xl font-bold">Buy Product</h3>
+                <p class="text-base opacity-90">Find amazing products available for purchase.</p>
             </div>
         </a>
 
         <!-- Sell Product Card -->
-        <a href="/sell-product" class="card shadow-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white">
-            <div class="card-body items-center text-center p-8 space-y-4">
-                <i class="fas fa-upload text-5xl"></i>
-                <h3 class="text-2xl font-semibold">Sell Product</h3>
-                <p>List your products for sale quickly and easily.</p>
+        <a href="/sell-product" class="card bg-gradient-to-r from-blue-600 to-cyan-500 shadow-xl text-white transition-transform transform hover:scale-105 duration-300">
+            <div class="card-body items-center text-center p-10 space-y-3">
+                <i class="fas fa-upload text-6xl drop-shadow-lg"></i>
+                <h3 class="text-3xl font-bold">Sell Product</h3>
+                <p class="text-base opacity-90">List your products for sale quickly and easily.</p>
             </div>
         </a>
+
+        <!-- My Products Card -->
+        <a href="/my-products" class="card bg-gradient-to-r from-yellow-500 to-amber-600 shadow-xl text-white transition-transform transform hover:scale-105 duration-300">
+            <div class="card-body items-center text-center p-10 space-y-3">
+                <i class="fas fa-box-open text-6xl drop-shadow-lg"></i>
+                <h3 class="text-3xl font-bold">My Products</h3>
+                <p class="text-base opacity-90">Manage your listed products and view buy requests.</p>
+            </div>
+        </a>
+
+        <!-- My Buy Requests Card -->
+        <a href="/my-buy-requests" class="card bg-gradient-to-r from-pink-500 to-rose-500 shadow-xl text-white transition-transform transform hover:scale-105 duration-300">
+            <div class="card-body items-center text-center p-10 space-y-3">
+                <i class="fas fa-receipt text-6xl drop-shadow-lg"></i>
+                <h3 class="text-3xl font-bold">My Buy Requests</h3>
+                <p class="text-base opacity-90">Track the status of your requested products.</p>
+            </div>
+        </a>
+
     </div>
 </div>
 

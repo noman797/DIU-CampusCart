@@ -111,4 +111,28 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    // Method to find a product by ID
+    public Product findProductById(Long id) {
+        // Fetch the product from the database
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        // If product is found, return it, else return null or throw exception
+        if (productOptional.isPresent()) {
+            return productOptional.get();
+        } else {
+            // Handle the case where the product is not found, e.g., throw an exception or return null
+            throw new RuntimeException("Product not found with id: " + id);
+        }
+    }
+
+    // Save or update the product in the database
+    public void save(Product product) {
+        productRepository.save(product);  // This saves the product to the database
+    }
+
+    // Find a product by its ID
+    public Product findById(Long id) {
+        Optional<Product> productOpt = productRepository.findById(id);
+        return productOpt.orElse(null);  // Return the product if found, else return null
+    }
 }

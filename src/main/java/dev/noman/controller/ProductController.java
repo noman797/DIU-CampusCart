@@ -1,9 +1,14 @@
 package dev.noman.controller;
 
+import dev.noman.model.BuyRequest;
 import dev.noman.model.Product;
+import dev.noman.service.BuyRequestService;
+import dev.noman.service.EmailService;
 import dev.noman.service.ProductService;
+import dev.noman.config.AppConfig;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -28,18 +34,25 @@ public class ProductController {
     private final ProductService productService;
     private static final String UPLOAD_DIR = "src/main/resources/static/uploads/";
 
+    @Autowired
+    private EmailService mailService;
+
+    @Autowired
+    private AppConfig appConfig;
+
+    @Autowired
+    private BuyRequestService buyRequestService;
+
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    // Show sell form
     @GetMapping("/sell-product")
     public String showProductForm(Model model) {
         model.addAttribute("product", new Product());
         return "sell-product";
     }
 
-    // Submit a product (add owner email from session)
     @PostMapping("/sell-product")
     public String submitProduct(@Valid @ModelAttribute Product product,
                                 BindingResult bindingResult,
@@ -47,7 +60,6 @@ public class ProductController {
                                 RedirectAttributes redirectAttributes,
                                 HttpSession session) {
 
-        // Set ownerEmail from logged-in user
         String userEmail = (String) session.getAttribute("userEmail");
         if (userEmail == null || !userEmail.endsWith("@diu.edu.bd")) {
             redirectAttributes.addFlashAttribute("error", "Unauthorized access.");
@@ -61,7 +73,6 @@ public class ProductController {
             return "sell-product";
         }
 
-        // Handle image upload
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             if (fileName != null && !fileName.matches(".*\\.(jpg|png|jpeg)$")) {
@@ -87,14 +98,12 @@ public class ProductController {
             product.setPhotoUrl("/uploads/default.jpg");
         }
 
-        // Save product to the database
         productService.saveProduct(product);
         redirectAttributes.addFlashAttribute("success", "Product added successfully!");
         logger.info("Product saved successfully: " + product);
         return "redirect:/sell-product";
     }
 
-    // Buy Products page with category filter
     @GetMapping("/products/buy-products")
     public String showBuyProductsPage(@RequestParam(value = "category", required = false) String category, Model model) {
         if (category != null && !category.isEmpty()) {
@@ -109,28 +118,30 @@ public class ProductController {
         return "buy-products";
     }
 
-    // Mark product as sold (only by owner)
     @PutMapping("/api/products/{id}/sold")
     public ResponseEntity<?> markProductAsSold(@PathVariable Long id, HttpSession session) {
         Optional<Product> productOpt = productService.getProductById(id);
+        if (productOpt.isEmpty()) return ResponseEntity.notFound().build();
 
-        if (productOpt.isPresent()) {
-            Product product = productOpt.get();
+        Product product = productOpt.get();
+        String userEmail = (String) session.getAttribute("userEmail");
 
-            // Get logged-in user email from session
-            String userEmail = (String) session.getAttribute("userEmail");
-            if (userEmail == null || !userEmail.equals(product.getOwnerEmail())) {
-                return ResponseEntity.status(403).body("You are not the owner of this product.");
-            }
-
-            // Mark the product as sold
-            product.setSoldOut(true);
-            productService.saveProduct(product);
-            return ResponseEntity.ok("Product marked as sold.");
+        if (!product.getOwnerEmail().equals(userEmail)) {
+            return ResponseEntity.status(403).body("Unauthorized.");
         }
 
-        return ResponseEntity.notFound().build();
+        product.setSoldOut(true);
+        product.setStatus(Product.ProductStatus.SOLD);
+        productService.saveProduct(product);
+
+        Optional<BuyRequest> acceptedRequestOpt = buyRequestService.getAcceptedRequest(product);
+        if (acceptedRequestOpt.isPresent()) {
+            mailService.sendSoldOutInvoiceToAcceptedBuyerAndSeller(product);
+        }
+
+        return ResponseEntity.ok("Marked as sold.");
     }
+
 
     @GetMapping("/product/{id}")
     public String viewProductDetails(@PathVariable Long id, Model model) {
@@ -143,4 +154,66 @@ public class ProductController {
         }
     }
 
+    @PostMapping("/buy-request/{id}")
+    public String submitBuyRequest(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
+        Product product = productService.findById(id);
+
+        if (product != null && !product.getSoldOut()) {
+            String buyerEmail = (String) session.getAttribute("userEmail");
+
+            if (buyerEmail == null || !buyerEmail.endsWith("@diu.edu.bd")) {
+                redirectAttributes.addFlashAttribute("error", "You must be logged in to request.");
+                return "redirect:/product/" + id;
+            }
+
+            BuyRequest request = new BuyRequest();
+            request.setBuyerEmail(buyerEmail);
+            request.setProduct(product);
+            request.setAccepted(false);
+            buyRequestService.save(request);
+
+            String acceptLink = appConfig.getAppUrl() + "/buy-request/accept/" + request.getId();
+            mailService.sendBuyRequestWithAcceptLinkToSeller(product.getOwnerEmail(), product.getName(), buyerEmail, acceptLink);
+
+            redirectAttributes.addFlashAttribute("success", "Buy request sent to the owner.");
+            return "redirect:/product/" + id;
+        }
+
+        redirectAttributes.addFlashAttribute("error", "Invalid product or already sold.");
+        return "redirect:/product/" + id;
+    }
+
+    @GetMapping("/buy-request/accept/{requestId}")
+    public String acceptBuyRequest(@PathVariable Long requestId, RedirectAttributes redirectAttributes) {
+        List<BuyRequest> allRequests = buyRequestService.getAllRequests();
+        Optional<BuyRequest> requestOpt = allRequests.stream().filter(r -> r.getId().equals(requestId)).findFirst();
+
+        if (requestOpt.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Request not found.");
+            return "redirect:/my-products";
+        }
+
+        BuyRequest request = requestOpt.get();
+
+        // ✅ 1. Reject all other requests for this product
+        List<BuyRequest> productRequests = buyRequestService.getRequestsByProduct(request.getProduct());
+        for (BuyRequest r : productRequests) {
+            r.setAccepted(false);
+        }
+
+        // ✅ 2. Accept only this one
+        request.setAccepted(true);
+        buyRequestService.saveAll(productRequests); // Save all changes at once
+
+        // ✅ 3. Notify buyer
+        mailService.sendBuyRequestToBuyer(request.getBuyerEmail(), request.getProduct().getName());
+
+        redirectAttributes.addFlashAttribute("success", "Buy request accepted and buyer has been notified.");
+        return "redirect:/my-products";
+    }
+
+
+    public String generateVerificationUrl(String token) {
+        return appConfig.getAppUrl() + "/api/verify?token=" + token;
+    }
 }

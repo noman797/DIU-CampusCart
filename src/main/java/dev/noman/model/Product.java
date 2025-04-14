@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -58,4 +59,28 @@ public class Product {
     @Email(message = "Owner email must be valid")
     @Column(name = "owner_email", nullable = false)
     private String ownerEmail;  // Email of the seller
+
+    // Removed buyerEmail from Product class
+    // It's better to keep this in the BuyRequest entity to track individual requests
+
+    // Enum for product status
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private ProductStatus status = ProductStatus.AVAILABLE;  // Default status is AVAILABLE
+
+    public Object getLastAcceptedRequest() {
+        // You can implement this by fetching the BuyRequest through the service layer
+        // or by accessing the database if needed.
+        // For now, it's left unimplemented.
+        return null; // Placeholder implementation
+    }
+
+    // Enum for product status
+    public enum ProductStatus {
+        AVAILABLE,
+        ON_HOLD,
+        SOLD
+    }
+
+
 }
