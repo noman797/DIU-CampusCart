@@ -59,13 +59,13 @@
 ![Buy](Photos/buy.png)
 
 ### Admin Dashboard
-![Admin Dashboard](Photos/admin das.png)
+![Admin Dashboard](Photos/admindas.png)
 
 ### Manage Users
-![Manage Users](Photos/manage user.png)
+![Manage Users](Photos/manageuser.png)
 
 ### Manage Product
-![Manage Product](Photos/manage product.png)
+![Manage Product](Photos/manageproduct.png)
 
 ## 🧠 Upcoming Features
 
