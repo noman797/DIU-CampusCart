@@ -10,15 +10,13 @@
   <img src="https://img.shields.io/badge/Database-H2-lightgrey?style=flat-square"/>
 </p>
 
----
 
 ## 📌 Project Overview
 
 **DIU CampusCart** is a web-based classified ads platform made specifically for the students of **Daffodil International University**. The platform enables DIU students to list items for sale, browse available products, and submit buy requests — all in a secure and student-only ecosystem.
 
-> 🔐 Only verified DIU email users (`@diu.edu.bd`) can register and use the platform.
+> 🔐 Only verified DIU email users (@diu.edu.bd) can register and use the platform.
 
----
 
 ## ✨ Key Features
 
@@ -32,8 +30,6 @@
 - 🎨 **Beautiful UI with Tailwind CSS + DaisyUI**
 - 💾 **H2 Persistent Database**
 
----
-
 ## 🧰 Tech Stack
 
 | Layer       | Technology                      |
@@ -45,11 +41,9 @@
 | Email       | JavaMailSender (Gmail SMTP)      |
 | Auth        | Session-based Authentication     |
 
----
 
 ## 📂 Project Structure
 
-```
 📦 DIU-CampusCart
 ├── src
 │   ├── main
@@ -63,9 +57,6 @@
 │   │       └── application.properties
 ├── data/
 │   └── noman.mv.db                # H2 database
-```
-
----
 
 ## 🚀 Getting Started
 
@@ -78,13 +69,10 @@
 ### 🔧 Setup Steps
 
 1. **Clone the repository:**
-   ```bash
    git clone https://github.com/noman797/DIU-CampusCart.git
    cd DIU-CampusCart
-   ```
 
 2. **Configure email in `application.properties`:**
-   ```properties
    spring.mail.username=your-email@gmail.com
    spring.mail.password=your-app-password
    spring.mail.host=smtp.gmail.com
@@ -92,30 +80,13 @@
    spring.mail.protocol=smtp
    spring.mail.properties.mail.smtp.auth=true
    spring.mail.properties.mail.smtp.starttls.enable=true
-   ```
 
 3. **Run the application:**
-   ```bash
    ./mvnw spring-boot:run
-   ```
 
 4. **Visit in Browser:**
    http://localhost:8080
 
-
-
-
-## 👥 Project Contributors
-
-| Name   | Role              |
-|--------|-------------------|
-| Noman  | Lead Developer    |
-| Supan  | UI & Testing      |
-| Antor  | Documentation     |
-| Adri   | Research & Design |
-| Simi   | QA & Suggestions  |
-
----
 
 ## 🧠 Upcoming Features
 
@@ -126,15 +97,11 @@
 - 🏆 Gamification & Points System
 - 📬 In-App Messaging Between Users
 
----
-
 ## 💬 Feedback & Support
 
 - Found a bug? Open an [Issue](https://github.com/noman797/DIU-CampusCart/issues)
 - Want to contribute? Fork the repo & create a pull request.
 - Have a suggestion? Let’s connect!
-
----
 
 ## 🌟 Show Your Support
 
