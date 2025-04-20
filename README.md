@@ -13,7 +13,7 @@
 
 ## 📌 Project Overview
 
-**DIU CampusCart** is a web-based classified ads platform made specifically for the students of **Daffodil International University**. The platform enables DIU students to list items for sale, browse available products, and submit buy requests — all in a secure and student-only ecosystem.
+**DIU CampusCart** is a second hand marketplace made specifically for the students of **Daffodil International University**. The platform enables DIU students to list items for sale, browse available products, and submit buy requests — all in a secure and student-only ecosystem.
 
 > 🔐 Only verified DIU email users (@diu.edu.bd) can register and use the platform.
 
