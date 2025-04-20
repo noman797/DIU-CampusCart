@@ -31,12 +31,16 @@ public class AdminController {
         this.productRepository = productRepository;
     }
 
+    // ✅ Updated helper method: only admin email check
+    private boolean isAdminAuthenticated(HttpSession session) {
+        String email = (String) session.getAttribute("adminEmail");
+        return email != null && admins.containsKey(email);
+    }
 
     @GetMapping("/login")
     public String showLoginPage() {
-        return "admin-login"; // Return the login page view
+        return "admin-login";
     }
-
 
     @PostMapping("/login")
     @ResponseBody
@@ -45,41 +49,49 @@ public class AdminController {
         String password = credentials.get("password");
 
         if (admins.containsKey(email) && admins.get(email).equals(password)) {
-            session.setAttribute("adminEmail", email); // Store admin email in session
+            session.setAttribute("adminEmail", email);
             return ResponseEntity.ok(Map.of("message", "Login successful"));
         }
-
-
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("message", "Invalid email or password"));
     }
 
-
     @GetMapping("/dashboard")
-    public String showDashboard() {
-        return "admin-dashboard"; // Return the dashboard page view
+    public String showDashboard(HttpSession session) {
+        if (!isAdminAuthenticated(session)) {
+            return "redirect:/admin/login";
+        }
+        return "admin-dashboard";
     }
-
 
     @GetMapping("/manage-users")
-    public String manageUsers(Model model) {
-        List<User> users = userRepository.findAll(); // Fetch all users from the repository
-        model.addAttribute("users", users); // Add users to the model
-        return "manage-users"; // Return the manage users page view
+    public String manageUsers(Model model, HttpSession session) {
+        if (!isAdminAuthenticated(session)) {
+            return "redirect:/admin/login";
+        }
+        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);
+        return "manage-users";
     }
-
 
     @GetMapping("/manage-products")
-    public String manageProducts(Model model) {
-        List<Product> products = productRepository.findAll(); // Fetch all products from the repository
-        model.addAttribute("products", products); // Add products to the model
-        return "manage-products"; // Return the manage products page view
+    public String manageProducts(Model model, HttpSession session) {
+        if (!isAdminAuthenticated(session)) {
+            return "redirect:/admin/login";
+        }
+        List<Product> products = productRepository.findAll();
+        model.addAttribute("products", products);
+        return "manage-products";
     }
-
 
     @PostMapping("/deleteUser")
     @ResponseBody
-    public ResponseEntity<?> deleteUser(@RequestParam("id") Long id) {
+    public ResponseEntity<?> deleteUser(@RequestParam("id") Long id, HttpSession session) {
+        if (!isAdminAuthenticated(session)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Unauthorized"));
+        }
+
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
             return ResponseEntity.ok(Map.of("message", "User deleted successfully."));
@@ -91,7 +103,12 @@ public class AdminController {
 
     @PostMapping("/deleteProduct")
     @ResponseBody
-    public ResponseEntity<?> deleteProduct(@RequestParam("id") Long id) {
+    public ResponseEntity<?> deleteProduct(@RequestParam("id") Long id, HttpSession session) {
+        if (!isAdminAuthenticated(session)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Unauthorized"));
+        }
+
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
             return ResponseEntity.ok(Map.of("message", "Product deleted successfully."));
@@ -101,12 +118,9 @@ public class AdminController {
         }
     }
 
-
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // Invalidate the session
-        return "redirect:/admin/login"; // Redirect to the login page
+        session.invalidate();
+        return "redirect:/admin/login";
     }
-
 }

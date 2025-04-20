@@ -16,6 +16,7 @@ public class VerificationController {
     private UserRepository userRepository;
 
     @GetMapping("/verify")
+    @ResponseBody
     public ResponseEntity<String> verifyUser(@RequestParam("token") String token) {
         // Directly find the user by verification token
         Optional<User> optionalUser = userRepository.findByVerificationToken(token);

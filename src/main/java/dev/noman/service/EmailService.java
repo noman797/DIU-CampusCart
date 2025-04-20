@@ -8,6 +8,7 @@ import dev.noman.model.BuyRequest;
 import dev.noman.model.Product;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -67,10 +68,11 @@ public class EmailService {
         }
     }
 
-    // ✅ Send Buy Request Accepted Email to Buyer
-    public void sendBuyRequestToBuyer(String toEmail, String productName) {
+    public void sendBuyRequestToBuyer(String toEmail, String productName, String sellerPhone) {
         String subject = "Your Buy Request for " + productName + " has been accepted!";
-        String message = "The seller has accepted your buy request for: " + productName + ". Please proceed with the transaction.";
+        String message = "The seller has accepted your buy request for: " + productName +
+                ".\n\nSeller Contact Number: " + sellerPhone +
+                "\n\nPlease contact the seller and proceed with the transaction.";
 
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(toEmail);
@@ -83,6 +85,7 @@ public class EmailService {
             System.err.println("Failed to send Buy Request accepted email to buyer: " + e.getMessage());
         }
     }
+
 
     // ✅ Send Buy Request With Accept Link to Seller
     public void sendBuyRequestWithAcceptLinkToSeller(String toEmail, String productName, String buyerEmail, String acceptLink) {

@@ -42,13 +42,20 @@ public class ProductController {
 
     @Autowired
     private BuyRequestService buyRequestService;
-
+    // Helper method to check if user is logged in
+    private boolean isAuthenticated(HttpSession session) {
+        return session.getAttribute("userName") != null;
+    }
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/sell-product")
-    public String showProductForm(Model model) {
+
+    public String showProductForm(HttpSession session, Model model) {
+        if (!isAuthenticated(session)) {
+            return "redirect:/"; // Redirect if not logged in
+        }
         model.addAttribute("product", new Product());
         return "sell-product";
     }
@@ -105,7 +112,10 @@ public class ProductController {
     }
 
     @GetMapping("/products/buy-products")
-    public String showBuyProductsPage(@RequestParam(value = "category", required = false) String category, Model model) {
+    public String showBuyProductsPage(@RequestParam(value = "category", required = false) String category, HttpSession session, Model model) {
+        if (!isAuthenticated(session)) {
+            return "redirect:/"; // Redirect if not logged in
+        }
         if (category != null && !category.isEmpty()) {
             model.addAttribute("products", productService.getProductsByCategory(category));
             model.addAttribute("selectedCategory", category);
@@ -120,6 +130,7 @@ public class ProductController {
 
     @PutMapping("/api/products/{id}/sold")
     public ResponseEntity<?> markProductAsSold(@PathVariable Long id, HttpSession session) {
+
         Optional<Product> productOpt = productService.getProductById(id);
         if (productOpt.isEmpty()) return ResponseEntity.notFound().build();
 
@@ -144,7 +155,11 @@ public class ProductController {
 
 
     @GetMapping("/product/{id}")
-    public String viewProductDetails(@PathVariable Long id, Model model) {
+    public String viewProductDetails(@PathVariable Long id, HttpSession session,  Model model) {
+
+        if (!isAuthenticated(session)) {
+            return "redirect:/"; // Redirect if not logged in
+        }
         Optional<Product> product = productService.getProductById(id);
         if (product.isPresent()) {
             model.addAttribute("product", product.get());
@@ -156,6 +171,7 @@ public class ProductController {
 
     @PostMapping("/buy-request/{id}")
     public String submitBuyRequest(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
+
         Product product = productService.findById(id);
 
         if (product != null && !product.getSoldOut()) {
@@ -182,35 +198,43 @@ public class ProductController {
         redirectAttributes.addFlashAttribute("error", "Invalid product or already sold.");
         return "redirect:/product/" + id;
     }
-
     @GetMapping("/buy-request/accept/{requestId}")
-    public String acceptBuyRequest(@PathVariable Long requestId, RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public String acceptBuyRequest(@PathVariable Long requestId, HttpSession session) {
         List<BuyRequest> allRequests = buyRequestService.getAllRequests();
         Optional<BuyRequest> requestOpt = allRequests.stream().filter(r -> r.getId().equals(requestId)).findFirst();
 
         if (requestOpt.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Request not found.");
-            return "redirect:/my-products";
+            return "❌ Request not found.";
         }
 
         BuyRequest request = requestOpt.get();
 
-        // ✅ 1. Reject all other requests for this product
-        List<BuyRequest> productRequests = buyRequestService.getRequestsByProduct(request.getProduct());
-        for (BuyRequest r : productRequests) {
-            r.setAccepted(false);
+        // Check if the request is already accepted
+        if (request.isAccepted()) {
+            return "❌ This request has already been accepted.";
         }
 
-        // ✅ 2. Accept only this one
+        // Deny all previous requests for the same product
+        List<BuyRequest> productRequests = buyRequestService.getRequestsByProduct(request.getProduct());
+        for (BuyRequest r : productRequests) {
+            r.setAccepted(false); // Deny previous requests
+        }
+
+        // Accept the current request
         request.setAccepted(true);
-        buyRequestService.saveAll(productRequests); // Save all changes at once
+        buyRequestService.saveAll(productRequests);
 
-        // ✅ 3. Notify buyer
-        mailService.sendBuyRequestToBuyer(request.getBuyerEmail(), request.getProduct().getName());
+        // Send a notification email to the buyer
+        mailService.sendBuyRequestToBuyer(
+                request.getBuyerEmail(),
+                request.getProduct().getName(),
+                request.getProduct().getPhone()
+        );
 
-        redirectAttributes.addFlashAttribute("success", "Buy request accepted and buyer has been notified.");
-        return "redirect:/my-products";
+        return "✅ Buy request accepted. Buyer has been notified.";
     }
+
 
 
     public String generateVerificationUrl(String token) {
