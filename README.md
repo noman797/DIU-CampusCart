@@ -1,4 +1,4 @@
-<h1 align="center">🎓 DIU CampusCart</h1>
+<h1 align="center">🎓 DIU CampusCart</h1> 
 <p align="center">
   A smart buy & sell platform exclusively for DIU students, built with ❤️ using Spring Boot, Tailwind CSS, and Thymeleaf.
 </p>
