@@ -41,6 +41,26 @@
 | Email       | JavaMailSender (Gmail SMTP)      |
 | Auth        | Session-based Authentication     |
 
+## 📸 Screenshots
+
+### 🖥️ Dashboard
+![Dashboard](Photos/dashboard.png)
+
+### 📋 Product Listing
+![Product Listing](photos/product-list.png)
+
+### 📧 Email Verification
+![Email Verification](photos/email-verification.png)
+
+### 📝 Registration Page
+![Registration](photos/registration.png)
+
+### 💬 Buy Request Sent
+![Buy Request](photos/buy-request.png)
+
+### ✅ Sold Out Product View
+![Sold Out](photos/sold-out.png)
+
 ## 🧠 Upcoming Features
 
 - 📱 Mobile App Integration (Flutter or React Native)
