@@ -57,6 +57,6 @@
 If you like this project, don’t forget to ⭐ the repository!
 
 <p align="center">
-  Made with ❤️ by Team CampusCart
+  Made with ❤️ by Abdullah Al Noman
 </p>
 
