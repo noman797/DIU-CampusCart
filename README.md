@@ -43,23 +43,29 @@
 
 ## 📸 Screenshots
 
-### 🖥️ Dashboard
-![Dashboard](Photos/dashboard.png)
+### Login
+![Login](Photos/login.png)
 
-### 📋 Product Listing
-![Product Listing](photos/product-list.png)
+### Registration
+![Registration](Photos/regis.png)
 
-### 📧 Email Verification
-![Email Verification](photos/email-verification.png)
+### Dashboard
+![Dashboard](Photos/dash.png)
 
-### 📝 Registration Page
-![Registration](photos/registration.png)
+### Sell
+![Sell](Photos/sell.png)
 
-### 💬 Buy Request Sent
-![Buy Request](photos/buy-request.png)
+### Buy
+![Buy](Photos/buy.png)
 
-### ✅ Sold Out Product View
-![Sold Out](photos/sold-out.png)
+### Admin Dashboard
+![Admin Dashboard](Photos/admin das.png)
+
+### Manage Users
+![Manage Users](Photos/manage user.png)
+
+### Manage Product
+![Manage Product](Photos/manage product.png)
 
 ## 🧠 Upcoming Features
 
