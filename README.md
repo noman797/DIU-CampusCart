@@ -41,60 +41,9 @@
 | Email       | JavaMailSender (Gmail SMTP)      |
 | Auth        | Session-based Authentication     |
 
-
-## 📂 Project Structure
-
-📦 DIU-CampusCart
-├── src
-│   ├── main
-│   │   ├── java/dev/noman/
-│   │   │   ├── controller/
-│   │   │   ├── model/
-│   │   │   ├── service/
-│   │   │   └── repository/
-│   │   └── resources/
-│   │       ├── templates/         # HTML templates
-│   │       └── application.properties
-├── data/
-│   └── noman.mv.db                # H2 database
-
-## 🚀 Getting Started
-
-### ✅ Prerequisites
-
-- Java 17+
-- Maven
-- Internet (for sending email)
-
-### 🔧 Setup Steps
-
-1. **Clone the repository:**
-   git clone https://github.com/noman797/DIU-CampusCart.git
-   cd DIU-CampusCart
-
-2. **Configure email in `application.properties`:**
-   spring.mail.username=your-email@gmail.com
-   spring.mail.password=your-app-password
-   spring.mail.host=smtp.gmail.com
-   spring.mail.port=587
-   spring.mail.protocol=smtp
-   spring.mail.properties.mail.smtp.auth=true
-   spring.mail.properties.mail.smtp.starttls.enable=true
-
-3. **Run the application:**
-   ./mvnw spring-boot:run
-
-4. **Visit in Browser:**
-   http://localhost:8080
-
-
 ## 🧠 Upcoming Features
 
 - 📱 Mobile App Integration (Flutter or React Native)
-- 🧠 AI-based Smart Product Suggestions
-- 🔐 Blockchain for Listing Verification
-- 📍 Location-Based Product Discovery
-- 🏆 Gamification & Points System
 - 📬 In-App Messaging Between Users
 
 ## 💬 Feedback & Support
