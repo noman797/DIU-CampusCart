@@ -78,6 +78,22 @@
 - Want to contribute? Fork the repo & create a pull request.
 - Have a suggestion? Let’s connect!
 
+  # DIU Campus Cart
+
+This is a classified ads platform for DIU students to buy and sell items.
+
+## Developer Credits
+
+This project **DIU Campus Cart** was fully developed and maintained by:
+
+**Abdullah Al Noman**  
+Student, Daffodil International University  
+
+> Note: This project was a group submission, but all frontend, backend, integration, and feature implementations (including authentication, email verification, buy request system, dashboard, and product handling) were solely developed by Abdullah Al Noman.
+
+Unauthorized use or claim without permission is not allowed. This repository and its code are protected under open-source licensing.
+
+
 ## 🌟 Show Your Support
 
 If you like this project, don’t forget to ⭐ the repository!
