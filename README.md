@@ -1,4 +1,16 @@
 <h1 align="center">🎓 DIU CampusCart</h1> 
+
+## Developer Credits
+
+This project **DIU Campus Cart** was fully developed and maintained by:
+
+**Abdullah Al Noman**  
+Student, Daffodil International University  
+
+> Note: This project was a group submission, but all frontend, backend, integration, and feature implementations (including authentication, email verification, buy request system, dashboard, and product handling) were solely developed by Abdullah Al Noman.
+
+Unauthorized use or claim without permission is not allowed. This repository and its code are protected under open-source licensing.
+
 <p align="center">
   A smart buy & sell platform exclusively for DIU students, built with ❤️ using Spring Boot, Tailwind CSS, and Thymeleaf.
 </p>
@@ -77,21 +89,6 @@
 - Found a bug? Open an [Issue](https://github.com/noman797/DIU-CampusCart/issues)
 - Want to contribute? Fork the repo & create a pull request.
 - Have a suggestion? Let’s connect!
-
-  # DIU Campus Cart
-
-This is a classified ads platform for DIU students to buy and sell items.
-
-## Developer Credits
-
-This project **DIU Campus Cart** was fully developed and maintained by:
-
-**Abdullah Al Noman**  
-Student, Daffodil International University  
-
-> Note: This project was a group submission, but all frontend, backend, integration, and feature implementations (including authentication, email verification, buy request system, dashboard, and product handling) were solely developed by Abdullah Al Noman.
-
-Unauthorized use or claim without permission is not allowed. This repository and its code are protected under open-source licensing.
 
 
 ## 🌟 Show Your Support
